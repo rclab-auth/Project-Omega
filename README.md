@@ -1,6 +1,6 @@
-Machine Learning Design Functions for R/C Columns
+# Machine Learning Design Functions for R/C Columns
 
-A.E. Charalampakis and V.K. Papanikolaou
+*A.E. Charalampakis and V.K. Papanikolaou
 
 Languages supported
 
