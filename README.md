@@ -19,22 +19,22 @@
 **Function syntax**
 
 - Rectangular solid section (As/4 per side)
---  w_RSe(bh,cb,n,mx,my)
+--w_RSe(bh,cb,n,mx,my)
 
 - Rectangular solid section (constant As per unit length)
---  w_RSd(bh,cb,n,mx,my)
+--w_RSd(bh,cb,n,mx,my)
   
 - Rectangular hollow section (As/4 per side)
---  w_RHe(bh,tb,n,mx,my)
+--w_RHe(bh,tb,n,mx,my)
   
 - Rectangular hollow section (constant As per unit length)
---  w_RHd(bh,tb,n,mx,my)
+--w_RHd(bh,tb,n,mx,my)
   
 - Circular solid section
---  w_CS(cd,n,m)
+--w_CS(cd,n,m)
 
 - Circular hollow section
---  w_CH(td,n,m)
+--w_CH(td,n,m)
 
 **Parameter description**
 
