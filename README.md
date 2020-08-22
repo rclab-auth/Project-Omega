@@ -3,7 +3,8 @@
 
 *A.E. Charalampakis and V.K. Papanikolaou*
 
-Languages supported
+
+**Languages supported**
 
 - C#
 - C++
@@ -15,7 +16,7 @@ Languages supported
 - VB.NET
 - VBA (Excel)
 
-Function syntax
+**Function syntax**
 
 - Rectangular solid section (As/4 per side)
   w_RSe(bh,cb,n,mx,my)
@@ -35,7 +36,7 @@ Function syntax
 - Circular hollow section
   w_CH(td,n,m)
 
-Parameter description
+**Parameter description**
 
 - bh : section aspect ratio (b>h)
 - cb : cover width to length b
