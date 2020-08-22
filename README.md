@@ -1,5 +1,5 @@
-# Project Omega
-**Machine Learning Design Functions for R/C Columns**
+#Project Omega
+###Machine Learning Design Functions for R/C Columns**
 
 *A.E. Charalampakis and V.K. Papanikolaou
 
