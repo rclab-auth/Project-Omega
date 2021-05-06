@@ -1,7 +1,7 @@
 # Project Omega
 ### Machine Learning Design Functions for R/C Columns
 
-*A.E. Charalampakis and V.K. Papanikolaou*
+*Charalampakis, A.E. and Papanikolaou, V.K. (2021) “Machine learning design of R/C columns”, Engineering Structures, Vol. 226, 111412.*
 
 
 **Languages supported**
