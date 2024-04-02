@@ -1,7 +1,7 @@
 # Project Omega
 ### Machine Learning Design Functions for R/C Columns
 
-*Charalampakis, A.E. and Papanikolaou, V.K. (2021) “Machine learning design of R/C columns”, Engineering Structures, Vol. 226, 111412.*
+Cite as : *Charalampakis, A.E. and Papanikolaou, V.K. (2021) “Machine learning design of R/C columns”, Engineering Structures, Vol. 226, 111412.*
 
 [https://doi.org/10.1016/j.engstruct.2020.111412](https://doi.org/10.1016/j.engstruct.2020.111412)
 
@@ -17,7 +17,7 @@
 - VB.NET (MLDF.vb)
 - VBA/Excel (MLDF.xlsm)
 
-**VBA/Excel (MLDF.xlsm) file contains a detailed spreadsheet for all functions.**
+	**VBA/Excel (MLDF.xlsm) file contains a detailed spreadsheet for all functions.**
 
 ## Function syntax
 
