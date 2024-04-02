@@ -17,7 +17,7 @@
 - VB.NET (MLDF.vb)
 - VBA/Excel (MLDF.xlsm)
 
-	**VBA/Excel (MLDF.xlsm) file contains a detailed spreadsheet for all functions.**
+	**Excel file contains an interactive spreadsheet for all functions.**
 
 ## Function syntax
 
