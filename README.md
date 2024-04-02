@@ -1,5 +1,5 @@
 # Project Omega
-### Machine Learning Design Functions for R/C Columns
+### Machine Learning Design Functions for R/C Sections
 
 *Charalampakis, A.E. and Papanikolaou, V.K. (2021) “Machine learning design of R/C columns”, Engineering Structures, Vol. 226, 111412.*
 
