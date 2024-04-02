@@ -23,7 +23,7 @@
 
 **Circular solid section**
 
-    w_CS(cd,n,m)<br>
+    w_CS(cd,n,m)
     As_CS(d,c,fcd,N,M)
 
 > c/d	cover over diameter (0.01 to 0.15)<br>
@@ -39,7 +39,7 @@
 
 **Circular hollow section**
 
-	w_CH(td,n,m)<br>
+	w_CH(td,n,m)
 	As_CH(d,t,fcd,N,M)
 
 > t/d thickness over diameter (0.05 to 0.20)<br>
@@ -56,7 +56,7 @@
 
 **Rectangular solid section with equal reinforcement at each side**
 	
-	w_RSe(bh,cb,n,mx,my)<br>
+	w_RSe(bh,cb,n,mx,my)
 	As_RSe(b,h,c,fcd,N,Mx,My)
 
 > b/h width over height (1.0 to 2.0)<br>
@@ -76,7 +76,7 @@
 
 **Rectangular solid section with distributed reinforcement at each side**
 	
-	w_RSd(bh,ch,n,mx,my)<br>
+	w_RSd(bh,ch,n,mx,my)
 	As_RSd(b,h,c,fcd,N,Mx,My)
   
 > b/h width over height (1.0 to 6.0)<br>
@@ -96,7 +96,7 @@
 
 **Rectangular hollow section with equal reinforcement at each side**
 
-	w_RHe(bh,tb,n,mx,my)<br>
+	w_RHe(bh,tb,n,mx,my)
 	As_RHe(b, h, t, fcd, N, Mx, My)
 
 > b/h width over height (1.0 to 2.0)<br>
@@ -116,7 +116,7 @@
 
 **Rectangular hollow section with distributed reinforcement at each side**
 
-	w_RHd(bh,tb,n,mx,my)<br>
+	w_RHd(bh,tb,n,mx,my)
 	As_RHd(b, h, t, fcd, N, Mx, My)
 
 > b/h width over height (1.0 to 6.0)<br>
@@ -136,8 +136,8 @@
 
 **Tee section**
 
-	w_T(beffbw,hfd,m)<br>
-	x_T(beffbw,hfd,m)<br>
+	w_T(beffbw,hfd,m)
+	x_T(beffbw,hfd,m)
 	As_T(beff,bw,h,hf,c,fcd,M,Optional N)
 
 > beff/bw flange width over web width (1.0 to 10.0)<br>
@@ -157,8 +157,8 @@
 
 **Rectangular section**
 
-	w_R(m)<br>
-	x_R(m)<br>
+	w_R(m)
+	x_R(m)
 	As_R(b,h,c,fcd,M,Optional N)
 
 > m normalized moment<br>
