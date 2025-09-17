@@ -5,6 +5,10 @@
 
 [https://doi.org/10.1016/j.engstruct.2020.111412](https://doi.org/10.1016/j.engstruct.2020.111412)
 
+*Charalampakis, A.E. and Papanikolaou, V.K. (2024) “Machine learning design of R/C sections revisited”, Structural Engineering and Mechanics, Vol. 92, No. 4, pp. 341-348.*
+
+[https://doi.org/10.12989/sem.2024.92.4.341](https://doi.org/10.12989/sem.2024.92.4.341)
+
 ## Languages supported
 
 - C# (MLDF.cs)
