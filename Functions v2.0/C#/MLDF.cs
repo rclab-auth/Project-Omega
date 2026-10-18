@@ -1396,6 +1396,9 @@ static class MLDF
         // only positive (sagging) moments, tension at the bottom fibre
         if (m < 0) return double.NaN;
 
+        // no result where the reinforcement ratio is invalid (out of range, omega > 0.50 or M < 0)
+        if (double.IsNaN(w_T(beffbw, hfd, m))) return double.NaN;
+
         double beffbw_n = (beffbw - 1.0) / 9.0;
         double hfd_n = (hfd - 0.05) / 0.2;
         double m_n = (m - 0.004955) / 0.3664;

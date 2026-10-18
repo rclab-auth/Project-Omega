@@ -1352,6 +1352,9 @@ Module MLDF
         ' only positive (sagging) moments, tension at the bottom fibre
         If m < 0 Then Return Double.NaN
 
+        ' no result where the reinforcement ratio is invalid (out of range, omega > 0.50 or M < 0)
+        If Double.IsNaN(w_T(beffbw, hfd, m)) Then Return Double.NaN
+
         Dim beffbw_n As Double = (beffbw - 1.0) / 9.0
         Dim hfd_n As Double = (hfd - 0.05) / 0.2
         Dim m_n As Double = (m - 0.004955) / 0.3664

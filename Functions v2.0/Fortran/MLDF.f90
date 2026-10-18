@@ -1440,6 +1440,12 @@ function x_T(beffbw,hfd,m)
         return
     endif
 
+    ! no result where the reinforcement ratio is invalid (out of range, omega > 0.50 or M < 0)
+    if (ieee_is_nan(w_T(beffbw,hfd,m))) then
+        x_T = ieee_value(1.d0,ieee_quiet_nan)
+        return
+    endif
+
     beffbw_n = (beffbw-1.0d0)/9.0d0
     hfd_n = (hfd-0.05d0)/0.2d0
     m_n = (m-0.004955d0)/0.3664d0

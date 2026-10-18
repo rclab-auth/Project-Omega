@@ -1439,6 +1439,12 @@ classdef MLDF
                 return;
             end
 
+            % no result where the reinforcement ratio is invalid (out of range, omega > 0.50 or M < 0)
+            if isnan(MLDF.w_T(beffbw, hfd, m))
+                x = NaN;
+                return;
+            end
+
             beffbw_n = (beffbw - 1.0) / 9.0;
             hfd_n = (hfd - 0.05) / 0.2;
             m_n = (m - 0.004955) / 0.3664;

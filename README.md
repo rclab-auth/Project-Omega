@@ -308,6 +308,7 @@ The networks must never be used outside the region where they were trained, beca
 2. **Moment boundary.** Small auxiliary networks (at most two hidden layers of 8 nodes) predict the maximum normalized moment the section can carry with ω = 0.75, for the given geometry, ν and moment direction. Larger moments return `NaN`.
 3. **Reinforcement limit.** Results above ω = 0.70 for columns, or ω = 0.50 for beams, return `NaN`. Negative network outputs are set to 0 (no reinforcement needed).
 4. **Moment sign.** Beams (T, R) return `NaN` for a negative moment. Columns accept any sign (see [Moment sign convention](#moment-sign-convention)).
+5. **Neutral axis.** `x_T` and `x_R` return `NaN` whenever `w_T` or `w_R` does, so ξ is given only together with a valid ω.
 
 Return values per language:
 
@@ -561,9 +562,13 @@ Each plot shows the error against ω for every test instance (bottom left), the 
 
 </details>
 
-**Consistency of the nine implementations.** All nine source files of each version were compiled and run on the same inputs (80,000 for v2.0 and 30,000 for v1.0, random and exactly on the range limits): C++ (g++), Java, C#, VB.NET (.NET 8), Fortran (gfortran), Delphi (Free Pascal), Matlab (Octave), Python, and the VBA of the workbooks. All of them return the same values within 2·10⁻¹¹ and the same `NaN` cases.
+**Consistency of the nine implementations.** All nine source files of each version were compiled and run on the same inputs (192,000 for v2.0 and 72,000 for v1.0, random, exactly on the range limits and with negative moments): C++ (g++), Java, C#, VB.NET (.NET 8), Fortran (gfortran), Delphi (Free Pascal), Matlab (Octave), Python, and the VBA of the workbooks. All of them return the same values within 4·10⁻¹¹ (Delphi; 2·10⁻¹³ for the rest) and the same `NaN` cases.
 
 **Validation.** The results were also checked against independent section analyses with AnySection and the authors' own biaxial design code, and, for the T-beam, against a separate design library. For circular and square sections, dense grids of millions of input points overlaid on classic design charts reproduce the charts.
+
+**Independent check (October 2026).** 240 random inputs of the networks (40 each for CS, CH and T, 30 each for RSe, RSd, RHe and RHd) were compared with a separate section design written from scratch for this check: EN 1992-1-1:2004 parabola-rectangle concrete, bilinear B500 steel without strain limit, strain pivots 3.5 ‰ and 2 ‰ at 3h/7, fibre integration and a search for the neutral axis depth and angle that matches the direction of the biaxial moment. The differences in ω were at most 0.0005 for the T-beam, 0.005 for CS and CH, 0.007 for RSe and RSd. The hollow sections first showed up to 0.026, which came from the coarse mesh of the thin walls: with a three times finer mesh the largest cases dropped to 0.001 to 0.008, in line with the test results above. The worked example gives ω = 0.4651 against 0.4664 of `w_RSe`.
+
+**Known limitation.** `w_RHd`: in about 0.1 % of the valid inputs (0.3 % for b/h 4 to 6), mainly under high compression (ν below about −0.4) where the concrete section alone carries the actions, the network returns a spurious ω, up to 0.70, instead of 0, most likely because the training data are designs that need reinforcement (ω > 0). The result is on the safe side but uneconomical. It shows as a ω that decreases when the moments increase; a check of the plain concrete section settles it. The other networks did not show this behaviour in the same checks.
 
 ---
 
@@ -582,6 +587,7 @@ Each plot shows the error against ω for every test instance (bottom left), the 
 
 ### Change log
 
+- **October 2026, general check.** All functions of both versions rerun in all nine languages on 192,000 (v2.0) and 72,000 (v1.0) inputs with identical results, and compared with an independent EC2 section design (see [Accuracy](#accuracy)). Limitation recorded: spurious ω of `w_RHd` where no reinforcement is needed. Fixed: `x_T` and `x_R` returned ξ even where `w_T` is `NaN` (ω above 0.50), with meaningless values above 1; they now return `NaN` (Excel `#N/A`) in the same cases as `w_T`.
 - **October 2026, moment signs.** All column functions of both versions now use the absolute values of the moments (the sections are doubly symmetric; negative moments used to return `NaN` or 0). The T-beam and rectangular beam functions return `NaN` for a negative (hogging) moment, or when M − N·y<sub>s1</sub> < 0, instead of 0 or a negative area. Results for positive moments are unchanged; all nine languages verified identical on 160,000 cases (v2.0) and 60,000 cases (v1.0), half of them with negative moments.
 - **October 2026.** Review of all files of both versions in all nine languages. Fixed: calls to a non-existent class in the Matlab `As_*`, `w_R` and `x_R` (v2.0); a Greek letter in a function name and a `Math.Max` call in the VBA of `w_RHd` for b/h > 2 (v2.0); the argument order of `Application.Atan2` in the VBA boundary checks (v2.0); the exponent of the hollow sections' ellipse boundary in Fortran (v1.0); single-precision constants in Fortran and range checks in Delphi (both versions). README rewritten.
 - **March 2026.** Workbook update.
