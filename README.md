@@ -1,6 +1,7 @@
 # Project Omega
 
 ### Machine Learning Design Functions for R/C Sections
+#### based on Eurocode 2 (EN 1992-1-1:2004) provisions
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 [![Engineering Structures 2021](https://img.shields.io/badge/DOI-10.1016%2Fj.engstruct.2020.111412-orange)](https://doi.org/10.1016/j.engstruct.2020.111412)
@@ -10,10 +11,15 @@
 Closed-form functions that return the **required longitudinal reinforcement** of reinforced concrete sections under axial load and uniaxial or biaxial bending, **directly and without iterations**. Each function is the forward feed of an Artificial Neural Network (ANN), trained on tens of millions of exact section analyses according to Eurocode 2 and tested on hundreds of millions more. The functions are available as plain source code in **nine languages** (C#, C++, Delphi, Fortran, Java, Matlab, Python, VB.NET, VBA) and as a ready-to-use **Excel workbook**.
 
 <p align="center">
-  <img src="docs/img/CS.svg" width="200" alt="Circular solid section">
-  <img src="docs/img/RSe.svg" width="200" alt="Rectangular solid section">
-  <img src="docs/img/RHd.svg" width="215" alt="Rectangular hollow section">
-  <img src="docs/img/T.svg" width="200" alt="T-beam">
+  <img src="docs/img/CS.svg" height="150" alt="Circular solid">
+  <img src="docs/img/CH.svg" height="150" alt="Circular hollow">
+  <img src="docs/img/RSe.svg" height="150" alt="Rectangular solid, equal reinforcement per side">
+  <img src="docs/img/RHe.svg" height="150" alt="Rectangular hollow, equal reinforcement per side">
+  <br>
+  <img src="docs/img/RSd.svg" height="150" alt="Rectangular solid, distributed reinforcement">
+  <img src="docs/img/RHd.svg" height="150" alt="Rectangular hollow, distributed reinforcement">
+  <img src="docs/img/T.svg" height="150" alt="T-beam">
+  <img src="docs/img/R.svg" height="150" alt="Rectangular beam">
 </p>
 
 ---
@@ -65,22 +71,22 @@ The name comes from **ω**, the mechanical reinforcement ratio that every functi
 
 ## Sections and functions at a glance
 
-| Section | Reinforcement layout | ω function | As function | Valid ranges | Network |
+| Section | Reinforcement layout | ω function | A<sub>s</sub> function | Valid ranges | Network |
 |---|---|---|---|---|---|
 | **CS** circular solid | uniform on a circle at cover c | `w_CS(cd, n, m)` | `As_CS(d, c, fcd, N, M)` | c/d 0.01 to 0.15 | 3-15-15-1 |
 | **CH** circular hollow | uniform on the wall midline | `w_CH(td, n, m)` | `As_CH(d, t, fcd, N, M)` | t/d 0.05 to 0.20 | 3-15-15-1 |
-| **RSe** rectangular solid | equal, As/4 per side | `w_RSe(bh, cb, n, mx, my)` | `As_RSe(b, h, c, fcd, N, Mx, My)` | b/h 1.0 to 2.0, c/b 0.01 to 0.15 | 9-35-35-1 |
-| **RHe** rectangular hollow | equal, As/4 per side, on the wall midline | `w_RHe(bh, tb, n, mx, my)` | `As_RHe(b, h, t, fcd, N, Mx, My)` | b/h 1.0 to 2.0, t/b 0.05 to 0.20 | 9-35-35-1 |
-| **RSd** rectangular solid | distributed, constant As per unit length | `w_RSd(bh, ch, n, mx, my)` | `As_RSd(b, h, c, fcd, N, Mx, My)` | b/h 1.0 to 6.0, c/h 0.01 to 0.15 | 3 × 9-35-35-1 |
-| **RHd** rectangular hollow | distributed, constant As per unit length, on the wall midline | `w_RHd(bh, th, n, mx, my)` | `As_RHd(b, h, t, fcd, N, Mx, My)` | b/h 1.0 to 6.0, t/h 0.05 to 0.20 | 3 × 9-35-35-1 |
-| **T** T-beam | single tension layer | `w_T(beffbw, hfd, m)`, `x_T(beffbw, hfd, m)` | `As_T(beff, bw, h, hf, c, fcd, M, N)` | beff/bw 1.0 to 10.0, hf/d 0.05 to 0.25 | 3-35-35-1 (ω and ξ) |
-| **R** rectangular beam | single tension layer | `w_R(m)`, `x_R(m)` | `As_R(b, h, c, fcd, M, N)` | as T with beff = bw | T network |
+| **RSe** rectangular solid | equal, A<sub>s</sub>/4 per side | `w_RSe(bh, cb, n, mx, my)` | `As_RSe(b, h, c, fcd, N, Mx, My)` | b/h 1.0 to 2.0, c/b 0.01 to 0.15 | 9-35-35-1 |
+| **RHe** rectangular hollow | equal, A<sub>s</sub>/4 per side, on the wall midline | `w_RHe(bh, tb, n, mx, my)` | `As_RHe(b, h, t, fcd, N, Mx, My)` | b/h 1.0 to 2.0, t/b 0.05 to 0.20 | 9-35-35-1 |
+| **RSd** rectangular solid | distributed, constant A<sub>s</sub> per unit length | `w_RSd(bh, ch, n, mx, my)` | `As_RSd(b, h, c, fcd, N, Mx, My)` | b/h 1.0 to 6.0, c/h 0.01 to 0.15 | 3 × 9-35-35-1 |
+| **RHd** rectangular hollow | distributed, constant A<sub>s</sub> per unit length, on the wall midline | `w_RHd(bh, th, n, mx, my)` | `As_RHd(b, h, t, fcd, N, Mx, My)` | b/h 1.0 to 6.0, t/h 0.05 to 0.20 | 3 × 9-35-35-1 |
+| **T** T-beam | single tension layer | `w_T(beffbw, hfd, m)`, `x_T(beffbw, hfd, m)` | `As_T(beff, bw, h, hf, c, fcd, M, N)` | b<sub>eff</sub>/b<sub>w</sub> 1.0 to 10.0, h<sub>f</sub>/d 0.05 to 0.25 | 3-35-35-1 (ω and ξ) |
+| **R** rectangular beam | single tension layer | `w_R(m)`, `x_R(m)` | `As_R(b, h, c, fcd, M, N)` | as T with b<sub>eff</sub> = b<sub>w</sub> | T network |
 
 For all columns: ν from −0.6 to +0.1. The moment range is not given explicitly; it is checked by a boundary network (see [Invalid input](#invalid-input-and-return-values)).
 
 The `w_*` and `x_*` functions take **normalized** quantities and return ω or ξ. The `As_*` functions take **dimensions, concrete strength and actions** and return the reinforcement area. Every `As_*` function normalizes its input, calls the corresponding `w_*` function and converts ω back to an area.
 
-**Which rectangular layout?** RSe/RHe (equal As/4 per side) and RSd/RHd (constant As per unit length) give the same result for square sections. For b/h > 1, uniformly distributed reinforcement is more economical when bending is mainly about the x axis (Mx, reinforcement needed along the long sides), while equal reinforcement per side is more economical when bending is mainly about the y axis (My, reinforcement needed along the short sides). Both can be evaluated and the smaller one chosen. For elongated sections (b/h > 2, typical of bridge piers) only RSd/RHd apply.
+**Which rectangular layout?** RSe/RHe (equal A<sub>s</sub>/4 per side) and RSd/RHd (constant A<sub>s</sub> per unit length) give the same result for square sections. For b/h > 1, uniformly distributed reinforcement is more economical when bending is mainly about the x axis (M<sub>x</sub>, reinforcement needed along the long sides), while equal reinforcement per side is more economical when bending is mainly about the y axis (M<sub>y</sub>, reinforcement needed along the short sides). Both can be evaluated and the smaller one chosen. For elongated sections (b/h > 2, typical of bridge piers) only RSd/RHd apply.
 
 ---
 
@@ -92,38 +98,46 @@ All arguments are in **m, kN and kPa** (kN/m²). The result is in **m²**.
 
 | Quantity | Unit | Example |
 |---|---|---|
-| dimensions b, h, d, c, t, beff, bw, hf | m | 0.60 |
-| concrete design strength fcd | kPa | C30/37 with αcc = 1.0: fcd = 30 / 1.5 = 20 MPa → `20000` |
+| dimensions b, h, d, c, t, b<sub>eff</sub>, b<sub>w</sub>, h<sub>f</sub> | m | 0.60 |
+| concrete design strength f<sub>cd</sub> | kPa | C30/37 with α<sub>cc</sub> = 1.0: f<sub>cd</sub> = 30 / 1.5 = 20 MPa → `20000` |
 | axial force N | kN, **compression negative** | `-1500` |
-| bending moments M, Mx, My | kNm, **absolute values** | `400` |
-| result As | m² | `0.004291` m² = 42.91 cm² |
+| bending moments M, M<sub>x</sub>, M<sub>y</sub> | kNm, **absolute values** | `400` |
+| result A<sub>s</sub> | m² | `0.004291` m² = 42.91 cm² |
 
-The steel design strength is built into the `As_*` functions: **fyd = 500 / 1.15 MPa** (B500, γs = 1.15). The networks were trained for this steel, so the functions are valid only for B500 reinforcement. Any concrete class from C12/15 to C50/60 can be used, since fcd enters only through the normalization; choose αcc according to your National Annex.
+The steel design strength is built into the `As_*` functions: **f<sub>yd</sub> = 500 / 1.15 MPa** (B500, γ<sub>s</sub> = 1.15). The networks were trained for this steel, so the functions are valid only for B500 reinforcement. Any concrete class from C12/15 to C50/60 can be used, since f<sub>cd</sub> enters only through the normalization; choose α<sub>cc</sub> according to your National Annex (see below for EN 1992-1-1:2023).
 
 ### Normalized quantities of the `w_*` functions
 
 | Symbol | Argument | Definition |
 |---|---|---|
-| ν | `n` | N / (Ac · fcd), compression negative |
-| μ | `m` | M / (Ac · d · fcd), circular sections |
-| μx | `mx` | Mx / (Ac · h · fcd), rectangular sections (= Mx / (b · h² · fcd) for solid ones) |
-| μy | `my` | My / (Ac · b · fcd), rectangular sections (= My / (b² · h · fcd) for solid ones) |
-| μ | `m` | M / (beff · d² · fcd) for the T-beam, M / (b · d² · fcd) for the rectangular beam |
-| ω | result | As · fyd / (Ac · fcd) for columns, As · fyd / (beff · d · fcd) for the T-beam, As · fyd / (b · d · fcd) for the rectangular beam |
+| ν | `n` | N / (A<sub>c</sub> · f<sub>cd</sub>), compression negative |
+| μ | `m` | M / (A<sub>c</sub> · d · f<sub>cd</sub>), circular sections |
+| μ<sub>x</sub> | `mx` | M<sub>x</sub> / (A<sub>c</sub> · h · f<sub>cd</sub>), rectangular sections (= M<sub>x</sub> / (b · h² · f<sub>cd</sub>) for solid ones) |
+| μ<sub>y</sub> | `my` | M<sub>y</sub> / (A<sub>c</sub> · b · f<sub>cd</sub>), rectangular sections (= M<sub>y</sub> / (b² · h · f<sub>cd</sub>) for solid ones) |
+| μ | `m` | M / (b<sub>eff</sub> · d² · f<sub>cd</sub>) for the T-beam, M / (b · d² · f<sub>cd</sub>) for the rectangular beam |
+| ω | result | A<sub>s</sub> · f<sub>yd</sub> / (A<sub>c</sub> · f<sub>cd</sub>) for columns, A<sub>s</sub> · f<sub>yd</sub> / (b<sub>eff</sub> · d · f<sub>cd</sub>) for the T-beam, A<sub>s</sub> · f<sub>yd</sub> / (b · d · f<sub>cd</sub>) for the rectangular beam |
 | ξ | result of `x_*` | x / d, depth of the neutral axis over the effective depth |
 
-Ac is the gross concrete area: π·d²/4 (CS), π·(d² − (d − 2t)²)/4 (CH), b·h (RSe, RSd), b·h − (b − 2t)·(h − 2t) (RHe, RHd).
+A<sub>c</sub> is the gross concrete area: π·d²/4 (CS), π·(d² − (d − 2t)²)/4 (CH), b·h (RSe, RSd), b·h − (b − 2t)·(h − 2t) (RHe, RHd).
 
 ### Geometry
 
-- **Rectangular columns: b ≥ h** (b/h ≥ 1). The x axis runs along b and the y axis along h, as in the sketches. **Mx** bends the section about the x axis (needs reinforcement along the long sides b), **My** about the y axis (along the short sides h).
-- **Cover c** is measured from the outer face to the **centerline of the bars** and is constant around the whole perimeter, as in actual practice. Classic design charts use different ratios b₁/b and h₁/h instead.
+- **Rectangular columns: b ≥ h** (b/h ≥ 1). The x axis runs along b and the y axis along h, as in the sketches, where the moments are drawn as double-arrow vectors on the axes. **M<sub>x</sub>** bends the section about the x axis (needs reinforcement along the long sides b), **M<sub>y</sub>** about the y axis (along the short sides h).
+- **Cover c** is measured from the outer face to the **centerline of the bars** and is constant around the whole perimeter, as in actual practice. Classic design charts use different ratios b<sub>1</sub>/b and h<sub>1</sub>/h instead.
 - In **hollow sections** the reinforcement lies on the **midline of the wall thickness t**, representing two equal layers placed symmetrically near the outer and inner faces.
 - **T-beams and rectangular beams** are singly reinforced, with one tension layer at cover c from the bottom face and effective depth d = h − c. The optional axial force N acts at the centroid of the gross section and is transferred to the tension steel level internally.
 
+### Use with the second generation EN 1992-1-1:2023
+
+The networks were trained with EN 1992-1-1:2004, but the functions can also be used with EN 1992-1-1:2023:
+
+- The concrete law is the same parabola-rectangle with ε<sub>c2</sub> = 2 ‰ and ε<sub>cu</sub> = 3.5 ‰ (§8.1.2), now for **all strength classes** up to f<sub>ck</sub> = 100 MPa. The steel law with a horizontal branch without strain limit (§5.2.4(2)b) and γ<sub>s</sub> = 1.15 are unchanged.
+- Compute the design strength as f<sub>cd</sub> = η<sub>cc</sub> · k<sub>tc</sub> · f<sub>ck</sub> / γ<sub>C</sub>, with η<sub>cc</sub> = (f<sub>ck,ref</sub> / f<sub>ck</sub>)<sup>1/3</sup> ≤ 1 (Formulas 5.3 and 5.4), and pass it as `fcd`. Since f<sub>cd</sub> enters only through the normalization, nothing else changes.
+- EN 1992-1-1:2023 (Figure 8.1) no longer limits fully compressed sections with the pivot ε<sub>c2</sub> at 3h/7; the extreme fibre always reaches ε<sub>cu</sub>, and under pure compression the steel develops f<sub>yd</sub> (Formula 8.3). For sections under high compression and small moments the 2023 capacity is therefore slightly higher, and the functions return **slightly more reinforcement than needed, on the safe side**. Where the neutral axis lies within the section, both editions give the same result.
+
 ### Moments must be absolute values
 
-The sections are doubly symmetric, so only the magnitudes of the moments matter. Pass **|Mx|, |My|, |M|**. The training data cover moment vector angles from 0° to 90° only, and negative moments return `NaN` or meaningless results.
+The sections are doubly symmetric, so only the magnitudes of the moments matter. Pass **|M<sub>x</sub>|, |M<sub>y</sub>|, |M|**. The training data cover moment vector angles from 0° to 90° only, and negative moments return `NaN` or meaningless results.
 
 ---
 
@@ -179,7 +193,7 @@ As_RSe(b, h, c, fcd, N, Mx, My)
 | `bh` | b/h, width over height (1.0 to 2.0) |
 | `cb` | c/b, cover over width (0.01 to 0.15) |
 | `n` | ν, normalized axial (−0.6 to +0.1) |
-| `mx`, `my` | μx, μy, normalized moments |
+| `mx`, `my` | μ<sub>x</sub>, μ<sub>y</sub>, normalized moments |
 | `b`, `h`, `c` | width, height, cover |
 | `fcd`, `N`, `Mx`, `My` | concrete strength, axial, moments |
 
@@ -197,7 +211,7 @@ As_RHe(b, h, t, fcd, N, Mx, My)
 | `bh` | b/h, width over height (1.0 to 2.0) |
 | `tb` | t/b, wall thickness over width (0.05 to 0.20) |
 | `n` | ν, normalized axial (−0.6 to +0.1) |
-| `mx`, `my` | μx, μy, normalized moments |
+| `mx`, `my` | μ<sub>x</sub>, μ<sub>y</sub>, normalized moments |
 | `b`, `h`, `t` | width, height, wall thickness |
 | `fcd`, `N`, `Mx`, `My` | concrete strength, axial, moments |
 
@@ -215,7 +229,7 @@ As_RSd(b, h, c, fcd, N, Mx, My)
 | `bh` | b/h, width over height (1.0 to 6.0) |
 | `ch` | c/h, cover over height (0.01 to 0.15) |
 | `n` | ν, normalized axial (−0.6 to +0.1) |
-| `mx`, `my` | μx, μy, normalized moments |
+| `mx`, `my` | μ<sub>x</sub>, μ<sub>y</sub>, normalized moments |
 | `b`, `h`, `c` | width, height, cover |
 | `fcd`, `N`, `Mx`, `My` | concrete strength, axial, moments |
 
@@ -235,7 +249,7 @@ As_RHd(b, h, t, fcd, N, Mx, My)
 | `bh` | b/h, width over height (1.0 to 6.0) |
 | `th` | t/h, wall thickness over height (0.05 to 0.20) |
 | `n` | ν, normalized axial (−0.6 to +0.1) |
-| `mx`, `my` | μx, μy, normalized moments |
+| `mx`, `my` | μ<sub>x</sub>, μ<sub>y</sub>, normalized moments |
 | `b`, `h`, `t` | width, height, wall thickness |
 | `fcd`, `N`, `Mx`, `My` | concrete strength, axial, moments |
 
@@ -253,9 +267,9 @@ As_T(beff, bw, h, hf, c, fcd, M, N)   ' N optional, default 0
 
 | Argument | Meaning |
 |---|---|
-| `beffbw` | beff/bw, flange width over web width (1.0 to 10.0) |
-| `hfd` | hf/d, flange thickness over effective depth (0.05 to 0.25) |
-| `m` | μ = M / (beff · d² · fcd) |
+| `beffbw` | b<sub>eff</sub>/b<sub>w</sub>, flange width over web width (1.0 to 10.0) |
+| `hfd` | h<sub>f</sub>/d, flange thickness over effective depth (0.05 to 0.25) |
+| `m` | μ = M / (b<sub>eff</sub> · d² · f<sub>cd</sub>) |
 | `beff`, `bw`, `h`, `hf`, `c` | flange width, web width, height, flange thickness, cover |
 | `fcd`, `M`, `N` | concrete strength, moment, optional axial |
 
@@ -273,11 +287,11 @@ As_R(b, h, c, fcd, M, N)   ' N optional, default 0
 
 | Argument | Meaning |
 |---|---|
-| `m` | μ = M / (b · d² · fcd) |
+| `m` | μ = M / (b · d² · f<sub>cd</sub>) |
 | `b`, `h`, `c` | width, height, cover |
 | `fcd`, `M`, `N` | concrete strength, moment, optional axial |
 
-The rectangular beam is the T-beam with beff = bw, so the hf/d value is irrelevant.
+The rectangular beam is the T-beam with b<sub>eff</sub> = b<sub>w</sub>, so the h<sub>f</sub>/d value is irrelevant.
 
 ---
 
@@ -301,7 +315,7 @@ Return values per language:
 
 ## Quick start in each language
 
-All examples compute the [worked example](#worked-example) below: a 600 × 500 mm column, C20/25 (fcd = 20 / 1.5 MPa), cover 50 mm, N = −400 kN, Mx = 100 kNm, My = 480 kNm, with equal reinforcement per side. The answer is **As = 0.004291 m² = 42.91 cm²**.
+All examples compute the [worked example](#worked-example) below: a 600 × 500 mm column, C20/25 (f<sub>cd</sub> = 20 / 1.5 MPa), cover 50 mm, N = −400 kN, M<sub>x</sub> = 100 kNm, M<sub>y</sub> = 480 kNm, with equal reinforcement per side. The answer is **A<sub>s</sub> = 0.004291 m² = 42.91 cm²**.
 
 The source files are in `Functions v2.0/<language>/`. Copy the file into your project.
 
@@ -431,17 +445,17 @@ The worked example of the 2024 paper, originally solved with a classic design ch
 | | |
 |---|---|
 | Section | 600 × 500 mm (b = 0.60 m, h = 0.50 m) |
-| Materials | C20/25 (fcd = 20 / 1.5 = 13.33 MPa), B500C |
+| Materials | C20/25 (f<sub>cd</sub> = 20 / 1.5 = 13.33 MPa), B500C |
 | Cover | c = 50 mm |
-| Actions | N = −400 kN, Mx = 100 kNm, My = 480 kNm |
+| Actions | N = −400 kN, M<sub>x</sub> = 100 kNm, M<sub>y</sub> = 480 kNm |
 
-Normalized input: b/h = 1.2, c/b = 0.0833, c/h = 0.10, ν = −400 / (0.30 · 13333) = −0.10, μx = 100 / (0.60 · 0.50² · 13333) = 0.05, μy = 480 / (0.60² · 0.50 · 13333) = 0.20.
+Normalized input: b/h = 1.2, c/b = 0.0833, c/h = 0.10, ν = −400 / (0.30 · 13333) = −0.10, μ<sub>x</sub> = 100 / (0.60 · 0.50² · 13333) = 0.05, μ<sub>y</sub> = 480 / (0.60² · 0.50 · 13333) = 0.20.
 
-| Method | ω | As |
+| Method | ω | A<sub>s</sub> |
 |---|---|---|
-| Design chart (b₁/b = h₁/h, interpolated) | 0.485 | 44.6 cm² |
-| `w_RSe` / `As_RSe`, equal As/4 per side | 0.466 | **42.91 cm²** |
-| `w_RSd` / `As_RSd`, constant As per unit length | 0.477 | 43.92 cm² |
+| Design chart (b<sub>1</sub>/b = h<sub>1</sub>/h, interpolated) | 0.485 | 44.6 cm² |
+| `w_RSe` / `As_RSe`, equal A<sub>s</sub>/4 per side | 0.466 | **42.91 cm²** |
+| `w_RSd` / `As_RSd`, constant A<sub>s</sub> per unit length | 0.477 | 43.92 cm² |
 
 The small difference from the chart comes from the cover: the chart assumes the same cover **ratio** in both directions, while the functions use the same cover **width** around the perimeter, as built. Here bending about y dominates, so equal reinforcement per side is slightly more economical than distributed reinforcement.
 
@@ -449,11 +463,11 @@ The small difference from the chart comes from the cover: the chart assumes the 
 
 ## How the functions were derived
 
-**1. Training data.** A validated algorithm for the analysis of arbitrary composite sections under biaxial bending and axial load was wrapped in a section generator. For every combination of geometry, ν, ω and moment direction it computed the ultimate normalized moments according to **Eurocode 2 (EN 1992-1-1)**:
+**1. Training data.** A validated algorithm for the analysis of arbitrary composite sections under biaxial bending and axial load was wrapped in a section generator. For every combination of geometry, ν, ω and moment direction it computed the ultimate normalized moments according to **Eurocode 2 (EN 1992-1-1:2004)**:
 
-- concrete C12/15 to C50/60, parabola-rectangle law, εc2 = 2.0 ‰, εcu2 = 3.5 ‰
-- steel B500C, bilinear law without hardening and without an ultimate strain limit, γs = 1.15
-- strain pivots and section equilibrium according to EN 1992-1-1
+- concrete C12/15 to C50/60, parabola-rectangle law, ε<sub>c2</sub> = 2.0 ‰, ε<sub>cu2</sub> = 3.5 ‰
+- steel B500C, bilinear law without hardening and without an ultimate strain limit, γ<sub>s</sub> = 1.15
+- strain pivots and section equilibrium according to EN 1992-1-1:2004
 
 Training inputs were evenly discretized; test inputs were random and about 2 to 11 times more numerous.
 
@@ -463,10 +477,10 @@ Training inputs were evenly discretized; test inputs were random and about 2 to 
 | CH | 176,823 | 987,384 | t/d 0.05 to 0.20, ν −0.6 to 0.1, ω 0 to 0.75 |
 | RSd | 116,051,058 | 236,930,728 | b/h 1.0 to 6.1, c/h 0.01 to 0.15, ν −0.6 to 0.1, ω 0 to 0.75, θ 0° to 90° |
 | RHd | 130,565,988 | 266,561,257 | b/h 1.0 to 6.1, t/h 0.05 to 0.21, ν −0.6 to 0.1, ω 0 to 0.75, θ 0° to 90° |
-| T | 380,100 | 1,996,095 | beff/bw up to 10, hf/d 0.05 to 0.25, ω 0 to 0.5 |
+| T | 380,100 | 1,996,095 | b<sub>eff</sub>/b<sub>w</sub> up to 10, h<sub>f</sub>/d 0.05 to 0.25, ω 0 to 0.5 |
 | RSe, RHe (v1.0) | about 37 and 42 million | about 75 and 84 million | b/h 1.0 to 2.0 |
 
-**2. Networks.** Fully connected networks with two hidden layers of equal size and sigmoid activation were trained with TensorFlow / Keras. Small networks and tree-based learners (M5, M5Rules) could not capture the nonlinearity; the training sets are so large that overfitting is not an issue. The rectangular sections use **9 inputs**: the five design variables (b/h, c/h or t/h, ν, μx, μy) plus engineered features (μ = √(μx² + μy²), μx², μy², μx·μy). Circular sections use 3 inputs and 15 nodes per hidden layer; rectangular sections and T-beams use 35 nodes per hidden layer. For b/h up to 6, three networks cover the ranges 1 to 2, 2 to 4 and 4 to 6, so the larger range costs nothing in speed.
+**2. Networks.** Fully connected networks with two hidden layers of equal size and sigmoid activation were trained with TensorFlow / Keras. Small networks and tree-based learners (M5, M5Rules) could not capture the nonlinearity; the training sets are so large that overfitting is not an issue. The rectangular sections use **9 inputs**: the five design variables (b/h, c/h or t/h, ν, μ<sub>x</sub>, μ<sub>y</sub>) plus engineered features (μ = √(μx² + μy²), μx², μy², μ<sub>x</sub>·μ<sub>y</sub>). Circular sections use 3 inputs and 15 nodes per hidden layer; rectangular sections and T-beams use 35 nodes per hidden layer. For b/h up to 6, three networks cover the ranges 1 to 2, 2 to 4 and 4 to 6, so the larger range costs nothing in speed.
 
 **3. Boundary networks.** Small auxiliary networks, trained for a fixed ω = 0.75, predict the largest admissible normalized moment for the given input and moment direction. They screen out moments outside the valid region, where the main networks would extrapolate (see [Invalid input](#invalid-input-and-return-values)).
 
@@ -476,7 +490,7 @@ Training inputs were evenly discretized; test inputs were random and about 2 to 
 
 ## Accuracy
 
-Test results of the v2.0 networks on the random test sets (ω_pred − ω, or ξ_pred − ξ for the T-beam neutral axis):
+Test results of the v2.0 networks on the random test sets (ω<sub>pred</sub> − ω, or ξ<sub>pred</sub> − ξ for the T-beam neutral axis):
 
 | Network | Test instances | MAE | Max positive error | Max negative error | RMSE | R² |
 |---|---:|---:|---:|---:|---:|---:|
