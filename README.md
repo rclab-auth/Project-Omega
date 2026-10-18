@@ -51,7 +51,7 @@
 > m normalized moment<br>
 > w mechanical reinforcement ratio<br>
 > d diameter<br>
-> c thickness<br>
+> t thickness<br>
 > fcd concrete strength<br>
 > N axial<br>
 > M moment<br>
@@ -120,7 +120,7 @@
 
 **Rectangular hollow section with distributed reinforcement at each side**
 
-	w_RHd(bh, tb, n, mx, my)
+	w_RHd(bh, th, n, mx, my)
 	As_RHd(b, h, t, fcd, N, Mx, My)
 
 > b/h width over height (1.0 to 6.0)<br>
@@ -167,9 +167,9 @@
 
 > m normalized moment<br>
 > w mechanical reinforcement ratio<br>
-> x normalized compression flange height<br>
-> b flange width<br>
-> h web width<br>
+> x normalized compression zone depth<br>
+> b width<br>
+> h height<br>
 > c cover<br>
 > fcd concrete strength<br>
 > M moment<br>

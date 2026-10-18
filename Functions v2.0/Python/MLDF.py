@@ -1383,7 +1383,7 @@ def x_T(beffbw,hfd,m):
 
 def As_T(beff,bw,h,hf,c,fcd,M,N=None):
 
-    if N == None: N = 0
+    if N is None: N = 0
 
     d = h-c
     beffbw = beff/bw
@@ -1416,7 +1416,7 @@ def x_R(m):
 
 def As_R(b,h,c,fcd,M,N=None):
 
-    if N == None: N = 0
+    if N is None: N = 0
 
     d = h-c
     ys1 = h/2-c

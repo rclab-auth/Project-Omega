@@ -68,7 +68,7 @@ classdef MLDF
             m = M / Ac / d / fcd;
             fyd = 500000 / 1.15;
 
-            As = newfunctions.w_CS(cd, n, m) * Ac * fcd / fyd;
+            As = MLDF.w_CS(cd, n, m) * Ac * fcd / fyd;
 
         end
 
@@ -138,7 +138,7 @@ classdef MLDF
             m = M / Ac / d / fcd;
             fyd = 500000 / 1.15;
 
-            As = newfunctions.w_CH(td, n, m) * Ac * fcd / fyd;
+            As = MLDF.w_CH(td, n, m) * Ac * fcd / fyd;
 
         end
 
@@ -286,7 +286,7 @@ classdef MLDF
             my = My / ((b^2) * h * fcd);
             fyd = 500000 / 1.15;
 
-            As = newfunctions.w_RSe(bh, cb, n, mx, my) * b * h * fcd / fyd;
+            As = MLDF.w_RSe(bh, cb, n, mx, my) * b * h * fcd / fyd;
 
         end
 
@@ -435,7 +435,7 @@ classdef MLDF
             my = My / Ac / b / fcd;
             fyd = 500000 / 1.15;
 
-            As = newfunctions.w_RHe(bh, tb, n, mx, my) * Ac * fcd / fyd;
+            As = MLDF.w_RHe(bh, tb, n, mx, my) * Ac * fcd / fyd;
 
         end
 
@@ -865,7 +865,7 @@ classdef MLDF
             my = My / (b^2) / h / fcd;
             fyd = 500000 / 1.15;
 
-            As = newfunctions.w_RSd(bh, ch, n, mx, my) * b * h * fcd / fyd;
+            As = MLDF.w_RSd(bh, ch, n, mx, my) * b * h * fcd / fyd;
 
         end
 
@@ -1292,7 +1292,7 @@ classdef MLDF
             my = My / Ac / b / fcd;
             fyd = 500000 / 1.15;
 
-            As = newfunctions.w_RHd(bh, th, n, mx, my) * Ac * fcd / fyd;
+            As = MLDF.w_RHd(bh, th, n, mx, my) * Ac * fcd / fyd;
 
         end
 
@@ -1501,7 +1501,7 @@ classdef MLDF
             m = Ms / beff / (d^2) / fcd;
             fyd = 500000 / 1.15;
 
-            As = newfunctions.w_T(beffbw, hfd, m) * beff * d * fcd / fyd + N / fyd;
+            As = MLDF.w_T(beffbw, hfd, m) * beff * d * fcd / fyd + N / fyd;
 
         end
 
@@ -1510,7 +1510,7 @@ classdef MLDF
 
         function [w] = w_R(m)
 
-            w = newfunctions.w_T(1.0, 0.1, m);
+            w = MLDF.w_T(1.0, 0.1, m);
 
         end
 
@@ -1519,7 +1519,7 @@ classdef MLDF
 
         function [x] = x_R(m)
 
-            x = newfunctions.x_T(1.0, 0.1, m);
+            x = MLDF.x_T(1.0, 0.1, m);
 
         end
 
@@ -1538,7 +1538,7 @@ classdef MLDF
             m = Ms / b / (d^2) / fcd;
             fyd = 500000 / 1.15;
 
-            As = newfunctions.w_R(m) * b * d * fcd / fyd + N / fyd;
+            As = MLDF.w_R(m) * b * d * fcd / fyd + N / fyd;
 
         end
 
