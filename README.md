@@ -101,7 +101,7 @@ All arguments are in **m, kN and kPa** (kN/m²). The result is in **m²**.
 | dimensions b, h, d, c, t, b<sub>eff</sub>, b<sub>w</sub>, h<sub>f</sub> | m | 0.60 |
 | concrete design strength f<sub>cd</sub> | kPa | C30/37 with α<sub>cc</sub> = 1.0: f<sub>cd</sub> = 30 / 1.5 = 20 MPa → `20000` |
 | axial force N | kN, **compression negative** | `-1500` |
-| bending moments M, M<sub>x</sub>, M<sub>y</sub> | kNm, **absolute values** for columns, **positive = sagging** for beams | `400` |
+| bending moments M, M<sub>x</sub>, M<sub>y</sub> | kNm, **always positive**: absolute values for columns, sagging for beams | `400` |
 | result A<sub>s</sub> | m² | `0.004291` m² = 42.91 cm² |
 
 The steel design strength is built into the `As_*` functions: **f<sub>yd</sub> = 500 / 1.15 MPa** (B500, γ<sub>s</sub> = 1.15). The networks were trained for this steel, so the functions are valid only for B500 reinforcement. Any concrete class from C12/15 to C50/60 can be used, since f<sub>cd</sub> enters only through the normalization; choose α<sub>cc</sub> according to your National Annex (see below for EN 1992-1-1:2023).
@@ -137,10 +137,12 @@ The networks were trained with EN 1992-1-1:2004, but the functions can also be u
 
 ### Moment sign convention
 
+**All functions take positive moments only.** Negative moments are outside the training range and return `NaN`, 0 or meaningless results.
+
 The double arrows in the sketches are the **positive moment vectors** (right-hand rule): M<sub>x</sub> points along −x and M<sub>y</sub> along +y, so positive M<sub>x</sub> and M<sub>y</sub> both compress the upper right quadrant of the section.
 
-- **Columns (RSe, RSd, RHe, RHd, CS, CH):** the sections are doubly symmetric, so only the magnitudes of the moments matter. Pass **|M<sub>x</sub>|, |M<sub>y</sub>|, |M|**. The training data cover moment vector angles from 0° to 90° only, and negative moments return `NaN` or meaningless results.
-- **Beams (T, R):** a positive M causes **tension at the bottom fibre** (sagging), where the single reinforcement layer lies, and compression in the flange. Only positive M is valid; a negative M returns 0 or a negative A<sub>s</sub>. For a hogging moment the flange of a T-beam is in tension, so use `As_R` with b = b<sub>w</sub> and the reinforcement at the top.
+- **Columns (RSe, RSd, RHe, RHd, CS, CH):** the sections are doubly symmetric, so the sign of a moment does not change the required reinforcement. Pass **|M<sub>x</sub>|, |M<sub>y</sub>|, |M|**; the training data cover moment vector angles from 0° to 90° only.
+- **Beams (T, R):** a positive M causes **tension at the bottom fibre** (sagging), where the single reinforcement layer lies, and compression in the flange. For a hogging moment the flange of a T-beam is in tension, so use `As_R` with b = b<sub>w</sub> and the reinforcement at the top.
 
 ---
 
