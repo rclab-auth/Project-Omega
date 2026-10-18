@@ -333,11 +333,11 @@ import math
 import MLDF
 
 As = MLDF.As_RSe(0.60, 0.50, 0.05, 20000/1.5, -400, 100, 480)   # m²
-w = MLDF.w_RSe(1.2, 0.05/0.6, -0.1, 0.05, 0.2)                   # ω
+w = MLDF.w_RSe(1.2, 0.05/0.6, -0.1, 0.05, 0.2)                  # ω
 if math.isnan(As):
     print('invalid input')
 else:
-    print(f'{As*1e4:.2f} {w:.4f}')                               # 42.91 0.4664
+    print(f'{As*1e4:.2f} {w:.4f}')                              # 42.91 0.4664
 ```
 </details>
 
@@ -345,7 +345,7 @@ else:
 <summary><b>C++</b> · <code>C++/MLDF.cpp</code></summary>
 
 ```cpp
-#include "MLDF.cpp"   // plain static functions
+#include "MLDF.cpp"                                                // plain static functions
 #include <cstdio>
 
 double As = As_RSe(0.60, 0.50, 0.05, 20000/1.5, -400, 100, 480);   // m²
@@ -406,7 +406,7 @@ The module relies on the project-level import of `System`, which Visual Studio a
 use MLDF
 real(kind=8) :: As, w
 As = As_RSe(0.6d0, 0.5d0, 0.05d0, 20000d0/1.5d0, -400d0, 100d0, 480d0)   ! m²
-w = w_RSe(1.2d0, 0.05d0/0.6d0, -0.1d0, 0.05d0, 0.2d0)                   ! ω
+w = w_RSe(1.2d0, 0.05d0/0.6d0, -0.1d0, 0.05d0, 0.2d0)                    ! ω
 if (ieee_is_nan(As)) then
     print *, 'invalid input'
 else
@@ -425,7 +425,7 @@ uses Math, MLDF;
 var As_, w: Double;
 ...
 As_ := As_RSe(0.6, 0.5, 0.05, 20000/1.5, -400, 100, 480);   // m²
-w := w_RSe(1.2, 0.05/0.6, -0.1, 0.05, 0.2);                  // ω
+w := w_RSe(1.2, 0.05/0.6, -0.1, 0.05, 0.2);                 // ω
 if IsNan(As_) then
     WriteLn('invalid input')
 else
