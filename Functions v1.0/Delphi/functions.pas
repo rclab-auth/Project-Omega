@@ -1,3 +1,6 @@
+// Moment sign convention : all functions take positive moments.
+// Columns (CS, CH, RSe, RHe, RSd, RHd) : the sections are doubly symmetric, absolute values of the moments are used.
+
 unit functions;
 
 interface
@@ -32,6 +35,9 @@ var
 
 begin
     w:=nan;
+
+    // moment sign is irrelevant (doubly symmetric section)
+    m := Abs(m);
 
     if (cd >= 0.01) and (cd <= 0.15) and (n <= N_MAX) and (n >= -0.6) then
     begin
@@ -93,6 +99,9 @@ var
 begin
     w:=nan;
 
+    // moment sign is irrelevant (doubly symmetric section)
+    m := Abs(m);
+
     if (td >= 0.05) and (td <= T_MAX) and (n <= N_MAX) and (n >= -0.6) then
     begin
 
@@ -153,6 +162,10 @@ var
 
 begin
     w:=nan;
+
+    // moment sign is irrelevant (doubly symmetric section)
+    mx := Abs(mx);
+    my := Abs(my);
 
     if (bh >= 1.0) and (bh <= 2.0) and (cb >= 0.01) and (cb <= 0.15) and (n <= N_MAX) and (n >= -0.6) then
     begin
@@ -311,6 +324,10 @@ var
 begin
     w:=nan;
 
+    // moment sign is irrelevant (doubly symmetric section)
+    mx := Abs(mx);
+    my := Abs(my);
+
     if (bh >= 1.0) and (bh <= 2.0) and (tb >= 0.05) and (tb <= T_MAX) and (n <= N_MAX) and (n >= -0.6) then
     begin
 
@@ -468,6 +485,10 @@ var
 begin
     w:=nan;
 
+    // moment sign is irrelevant (doubly symmetric section)
+    mx := Abs(mx);
+    my := Abs(my);
+
     if (bh >= 1.0) and (bh <= 2.0) and (cb >= 0.01) and (cb <= 0.15) and (n <= N_MAX) and (n >= -0.6) then
     begin
 
@@ -624,6 +645,10 @@ var
 
 begin
     w:=nan;
+
+    // moment sign is irrelevant (doubly symmetric section)
+    mx := Abs(mx);
+    my := Abs(my);
 
     if (bh >= 1.0) and (bh <= 2.0) and (tb >= 0.05) and (tb <= T_MAX) and (n <= N_MAX) and (n >= -0.6) then
     begin

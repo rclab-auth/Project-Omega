@@ -1,3 +1,7 @@
+// Moment sign convention : all functions take positive moments.
+// Columns (CS, CH, RSe, RHe, RSd, RHd) : the sections are doubly symmetric, absolute values of the moments are used.
+// T-beam and rectangular beam (T, R) : positive M causes tension at the bottom fibre (sagging), M < 0 returns NaN.
+
 unit MLDF;
 
 
@@ -56,6 +60,9 @@ var
 
 begin
     if not ((cd >= 0.01) and (cd <= 0.15) and (n <= N_MAX) and (n >= -0.6)) then Exit(NaN);
+
+    // moment sign is irrelevant (doubly symmetric section)
+    m := Abs(m);
 
     cd_n := (cd-0.01)/0.14;
     n_n := (n+0.6)/0.7;
@@ -129,6 +136,9 @@ var
 begin
     if not ((td >= 0.05) and (td <= T_MAX) and (n <= N_MAX) and (n >= -0.6)) then Exit(NaN);
 
+    // moment sign is irrelevant (doubly symmetric section)
+    m := Abs(m);
+
     td_n := (td-0.05)/0.15;
     n_n := (n+0.6)/0.7;
     m_n := (m-0.010002)/0.345579;
@@ -201,6 +211,10 @@ var
 
 begin
     if not ((bh >= 1.0) and (bh <= 2.0) and (cb >= 0.01) and (cb <= 0.15) and (n <= N_MAX) and (n >= -0.6)) then Exit(NaN);
+
+    // moment sign is irrelevant (doubly symmetric section)
+    mx := Abs(mx);
+    my := Abs(my);
 
     w := NaN;
     bh_n := (bh-1.0)/1.05;
@@ -348,6 +362,10 @@ var
 begin
     if not ((bh >= 1.0) and (bh <= 2.0) and (tb >= 0.05) and (tb <= T_MAX) and (n <= N_MAX) and (n >= -0.6)) then Exit(NaN);
 
+    // moment sign is irrelevant (doubly symmetric section)
+    mx := Abs(mx);
+    my := Abs(my);
+
     w := NaN;
     bh_n := (bh-1.0)/1.05;
     tb_n := (tb-0.05)/0.16;
@@ -494,6 +512,10 @@ var
 
 begin
     if not ((ch >= 0.01) and (ch <= 0.15) and (n <= N_MAX) and (n >= -0.6)) then Exit(NaN);
+
+    // moment sign is irrelevant (doubly symmetric section)
+    mx := Abs(mx);
+    my := Abs(my);
 
     w := math.nan;
 
@@ -889,6 +911,10 @@ var
 begin
     if not ((th >= 0.05) and (th <= T_MAX) and (n <= N_MAX) and (n >= -0.6)) then Exit(NaN);
 
+    // moment sign is irrelevant (doubly symmetric section)
+    mx := Abs(mx);
+    my := Abs(my);
+
     w := NaN;
 
     // branch b/h := 1 to 2
@@ -1283,6 +1309,9 @@ var
 begin
     if not ((beffbw >= 1.0) and (beffbw <= 10.0) and (hfd >= 0.05) and (hfd <= 0.25)) then Exit(NaN);
 
+    // only positive (sagging) moments, tension at the bottom fibre
+    if m < 0 then Exit(NaN);
+
     beffbw_n := (beffbw-1.0)/9.0;
     hfd_n := (hfd-0.05)/0.2;
     m_n := (m-0.004955)/0.3664;
@@ -1377,6 +1406,9 @@ var
 begin
     if not ((beffbw >= 1.0) and (beffbw <= 10.0) and (hfd >= 0.05) and (hfd <= 0.25)) then Exit(NaN);
 
+    // only positive (sagging) moments, tension at the bottom fibre
+    if m < 0 then Exit(NaN);
+
     beffbw_n := (beffbw-1.0)/9.0;
     hfd_n := (hfd-0.05)/0.2;
     m_n := (m-0.004955)/0.3664;
@@ -1466,6 +1498,9 @@ var
     d,beffbw,hfd,A1,A2,ys1,Ms,mi,fyd : double;
 
 begin
+    // only positive (sagging) moments, tension at the bottom fibre
+    if M < 0 then Exit(NaN);
+
     d := h-c;
     beffbw := beff/bw;
     hfd := hf/d;
@@ -1506,6 +1541,9 @@ var
     d,ys1,Ms,mi,fyd : double;
 
 begin
+    // only positive (sagging) moments, tension at the bottom fibre
+    if M < 0 then Exit(NaN);
+
     d := h-c;
     ys1 := h/2-c;
     Ms := M - N*ys1;

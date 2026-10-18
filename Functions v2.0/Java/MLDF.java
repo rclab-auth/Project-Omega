@@ -1,3 +1,7 @@
+// Moment sign convention : all functions take positive moments.
+// Columns (CS, CH, RSe, RHe, RSd, RHd) : the sections are doubly symmetric, absolute values of the moments are used.
+// T-beam and rectangular beam (T, R) : positive M causes tension at the bottom fibre (sagging), M < 0 returns NaN.
+
 public class MLDF {
 
     // Circular solid section (CS)
@@ -7,6 +11,9 @@ public class MLDF {
     {
         if (!((cd >= 0.01) && (cd <= 0.15) && (n <= 0.1) && (n >= -0.6)))
             return Double.NaN;
+
+        // moment sign is irrelevant (doubly symmetric section)
+        m = Math.abs(m);
 
         double cd_n = (cd - 0.01) / 0.14;
         double n_n = (n + 0.6) / 0.7;
@@ -75,6 +82,9 @@ public class MLDF {
         if (!((td >= 0.05) && (td <= 0.20) && (n <= 0.1) && (n >= -0.6)))
             return Double.NaN;
 
+        // moment sign is irrelevant (doubly symmetric section)
+        m = Math.abs(m);
+
         double td_n = (td - 0.05) / 0.15;
         double n_n = (n + 0.6) / 0.7;
         double m_n = (m - 0.010002) / 0.345579;
@@ -141,6 +151,10 @@ public class MLDF {
     {
         if (!((bh >= 1.0) && (bh <= 2.0) && (cb >= 0.01) && (cb <= 0.15) && (n <= 0.1) && (n >= -0.6)))
             return Double.NaN;
+
+        // moment sign is irrelevant (doubly symmetric section)
+        mx = Math.abs(mx);
+        my = Math.abs(my);
 
         double bh_n = (bh - 1.0) / 1.05;
         double cb_n = (cb - 0.01) / 0.14;
@@ -285,6 +299,10 @@ public class MLDF {
         if (!((bh >= 1.0) && (bh <= 2.0) && (tb >= 0.05) && (tb <= 0.20) && (n <= 0.1) && (n >= -0.6)))
             return Double.NaN;
 
+        // moment sign is irrelevant (doubly symmetric section)
+        mx = Math.abs(mx);
+        my = Math.abs(my);
+
         double bh_n = (bh - 1.0) / 1.05;
         double tb_n = (tb - 0.05) / 0.16;
         double n_n = (n + 0.6) / 0.7;
@@ -428,6 +446,10 @@ public class MLDF {
     {
         if (!((ch >= 0.01) && (ch <= 0.15) && (n <= 0.1) && (n >= -0.6)))
             return Double.NaN;
+
+        // moment sign is irrelevant (doubly symmetric section)
+        mx = Math.abs(mx);
+        my = Math.abs(my);
 
         // branch b/h = 1 to 2
 
@@ -847,6 +869,10 @@ public class MLDF {
     {
         if (!((th >= 0.05) && (th <= 0.20) && (n <= 0.1) && (n >= -0.6)))
             return Double.NaN;
+
+        // moment sign is irrelevant (doubly symmetric section)
+        mx = Math.abs(mx);
+        my = Math.abs(my);
 
         // branch b/h = 1 to 2
 
@@ -1268,6 +1294,9 @@ public class MLDF {
         if (!((beffbw >= 1.0) && (beffbw <= 10.0) && (hfd >= 0.05) && (hfd <= 0.25)))
             return Double.NaN;
 
+        // only positive (sagging) moments, tension at the bottom fibre
+        if (m < 0) return Double.NaN;
+
         double beffbw_n = (beffbw - 1.0) / 9.0;
         double hfd_n = (hfd - 0.05) / 0.2;
         double m_n = (m - 0.004955) / 0.3664;
@@ -1361,6 +1390,9 @@ public class MLDF {
         if (!((beffbw >= 1.0) && (beffbw <= 10.0) && (hfd >= 0.05) && (hfd <= 0.25)))
             return Double.NaN;
 
+        // only positive (sagging) moments, tension at the bottom fibre
+        if (m < 0) return Double.NaN;
+
         double beffbw_n = (beffbw - 1.0) / 9.0;
         double hfd_n = (hfd - 0.05) / 0.2;
         double m_n = (m - 0.004955) / 0.3664;
@@ -1448,6 +1480,9 @@ public class MLDF {
 
     public static double As_T(double beff, double bw, double h, double hf, double c, double fcd, double M, double N)
     {
+        // only positive (sagging) moments, tension at the bottom fibre
+        if (M < 0) return Double.NaN;
+
         double d = h - c;
         double beffbw = beff / bw;
         double hfd = hf / d;
@@ -1464,6 +1499,9 @@ public class MLDF {
 
     public static double As_T(double beff, double bw, double h, double hf, double c, double fcd, double M)
     {
+        // only positive (sagging) moments, tension at the bottom fibre
+        if (M < 0) return Double.NaN;
+
         double N = 0;
         double d = h - c;
         double beffbw = beff / bw;
@@ -1499,6 +1537,9 @@ public class MLDF {
 
     public static double As_R(double b, double h, double c, double fcd, double M, double N)
     {
+        // only positive (sagging) moments, tension at the bottom fibre
+        if (M < 0) return Double.NaN;
+
         double d = h - c;
         double ys1 = h / 2 - c;
         double Ms = M - N * ys1;
@@ -1510,6 +1551,9 @@ public class MLDF {
 
     public static double As_R(double b, double h, double c, double fcd, double M)
     {
+        // only positive (sagging) moments, tension at the bottom fibre
+        if (M < 0) return Double.NaN;
+
         double N = 0;
         double d = h - c;
         double ys1 = h / 2 - c;

@@ -1,4 +1,7 @@
-﻿Module Functions
+﻿' Moment sign convention : all functions take positive moments.
+' Columns (CS, CH, RSe, RHe, RSd, RHd) : the sections are doubly symmetric, absolute values of the moments are used.
+
+Module Functions
 
 	'CS Function
 
@@ -42,6 +45,9 @@
 
 		Dim w_n As Double
 		Dim w As Double = Double.NaN
+
+		' moment sign is irrelevant (doubly symmetric section)
+		m = Math.Abs(m)
 
 		If (cd >= 0.01) And (cd <= 0.15) And (n <= 0.1) And (n >= -0.6) Then
 
@@ -134,6 +140,9 @@
 
 		Dim w_n As Double
 		Dim w As Double = Double.NaN
+
+		' moment sign is irrelevant (doubly symmetric section)
+		m = Math.Abs(m)
 
 		If (td >= 0.05) And (td <= 0.2) And (n <= 0.1) And (n >= -0.6) Then
 
@@ -277,6 +286,10 @@
 
 		Dim w_n As Double
 		Dim w As Double = Double.NaN
+
+		' moment sign is irrelevant (doubly symmetric section)
+		mx = Math.Abs(mx)
+		my = Math.Abs(my)
 
 		If (bh >= 1.0) And (bh <= 2.0) And (cb >= 0.01) And (cb <= 0.15) And (n <= 0.1) And (n >= -0.6) Then
 
@@ -524,6 +537,10 @@
 		Dim w_n As Double
 		Dim w As Double = Double.NaN
 
+		' moment sign is irrelevant (doubly symmetric section)
+		mx = Math.Abs(mx)
+		my = Math.Abs(my)
+
 		If (bh >= 1.0) And (bh <= 2.0) And (tb >= 0.05) And (tb <= 0.2) And (n <= 0.1) And (n >= -0.6) Then
 
 			bh_n = (bh - 1.0) / 1.05
@@ -770,6 +787,10 @@
 		Dim w_n As Double
 		Dim w As Double = Double.NaN
 
+		' moment sign is irrelevant (doubly symmetric section)
+		mx = Math.Abs(mx)
+		my = Math.Abs(my)
+
 		If (bh >= 1.0) And (bh <= 2.0) And (cb >= 0.01) And (cb <= 0.15) And (n <= 0.1) And (n >= -0.6) Then
 
 			bh_n = (bh - 1.0) / 1.05
@@ -1015,6 +1036,10 @@
 
 		Dim w_n As Double
 		Dim w As Double = Double.NaN
+
+		' moment sign is irrelevant (doubly symmetric section)
+		mx = Math.Abs(mx)
+		my = Math.Abs(my)
 
 		If (bh >= 1.0) And (bh <= 2.0) And (tb >= 0.05) And (tb <= 0.2) And (n <= 0.1) And (n >= -0.6) Then
 

@@ -1,4 +1,8 @@
-﻿Option Explicit On
+﻿' Moment sign convention : all functions take positive moments.
+' Columns (CS, CH, RSe, RHe, RSd, RHd) : the sections are doubly symmetric, absolute values of the moments are used.
+' T-beam and rectangular beam (T, R) : positive M causes tension at the bottom fibre (sagging), M < 0 returns NaN.
+
+Option Explicit On
 
 Module MLDF
 
@@ -8,6 +12,9 @@ Module MLDF
     Public Function w_CS(ByVal cd As Double, ByVal n As Double, ByVal m As Double) As Double
 
         If Not ((cd >= 0.01) AndAlso (cd <= 0.15) AndAlso (n <= 0.1) AndAlso (n >= -0.6)) Then Return Double.NaN
+
+        ' moment sign is irrelevant (doubly symmetric section)
+        m = Math.Abs(m)
 
         Dim cd_n As Double = (cd - 0.01) / 0.14
         Dim n_n As Double = (n + 0.6) / 0.7
@@ -76,6 +83,9 @@ Module MLDF
 
         If Not ((td >= 0.05) AndAlso (td <= 0.2) AndAlso (n <= 0.1) AndAlso (n >= -0.6)) Then Return Double.NaN
 
+        ' moment sign is irrelevant (doubly symmetric section)
+        m = Math.Abs(m)
+
         Dim td_n As Double = (td - 0.05) / 0.15
         Dim n_n As Double = (n + 0.6) / 0.7
         Dim m_n As Double = (m - 0.010002) / 0.345579
@@ -142,6 +152,10 @@ Module MLDF
     Public Function w_RSe(ByVal bh As Double, ByVal cb As Double, ByVal n As Double, ByVal mx As Double, ByVal my As Double) As Double
 
         If Not ((bh >= 1.0) AndAlso (bh <= 2.0) AndAlso (cb >= 0.01) AndAlso (cb <= 0.15) AndAlso (n <= 0.1) AndAlso (n >= -0.6)) Then Return Double.NaN
+
+        ' moment sign is irrelevant (doubly symmetric section)
+        mx = Math.Abs(mx)
+        my = Math.Abs(my)
 
         Dim bh_n As Double = (bh - 1.0) / 1.05
         Dim cb_n As Double = (cb - 0.01) / 0.14
@@ -282,6 +296,10 @@ Module MLDF
 
         If Not ((bh >= 1.0) AndAlso (bh <= 2.0) AndAlso (tb >= 0.05) AndAlso (tb <= 0.2) AndAlso (n <= 0.1) AndAlso (n >= -0.6)) Then Return Double.NaN
 
+        ' moment sign is irrelevant (doubly symmetric section)
+        mx = Math.Abs(mx)
+        my = Math.Abs(my)
+
         Dim bh_n As Double = (bh - 1.0) / 1.05
         Dim tb_n As Double = (tb - 0.05) / 0.16
         Dim n_n As Double = (n + 0.6) / 0.7
@@ -421,6 +439,10 @@ Module MLDF
     Public Function w_RSd(ByVal bh As Double, ByVal ch As Double, ByVal n As Double, ByVal mx As Double, ByVal my As Double) As Double
 
         If Not ((ch >= 0.01) AndAlso (ch <= 0.15) AndAlso (n <= 0.1) AndAlso (n >= -0.6)) Then Return Double.NaN
+
+        ' moment sign is irrelevant (doubly symmetric section)
+        mx = Math.Abs(mx)
+        my = Math.Abs(my)
 
         If (bh >= 1.0) AndAlso (bh <= 2.0) Then
 
@@ -821,6 +843,10 @@ Module MLDF
     Public Function w_RHd(ByVal bh As Double, ByVal th As Double, ByVal n As Double, ByVal mx As Double, ByVal my As Double) As Double
 
         If Not ((th >= 0.05) AndAlso (th <= 0.2) AndAlso (n <= 0.1) AndAlso (n >= -0.6)) Then Return Double.NaN
+
+        ' moment sign is irrelevant (doubly symmetric section)
+        mx = Math.Abs(mx)
+        my = Math.Abs(my)
 
         If (bh >= 1.0) AndAlso (bh <= 2.0) Then
 
@@ -1226,6 +1252,9 @@ Module MLDF
 
         If Not ((beffbw >= 1.0) AndAlso (beffbw <= 10.0) AndAlso (hfd >= 0.05) AndAlso (hfd <= 0.25)) Then Return Double.NaN
 
+        ' only positive (sagging) moments, tension at the bottom fibre
+        If m < 0 Then Return Double.NaN
+
         Dim beffbw_n As Double = (beffbw - 1.0) / 9.0
         Dim hfd_n As Double = (hfd - 0.05) / 0.2
         Dim m_n As Double = (m - 0.004955) / 0.3664
@@ -1320,6 +1349,9 @@ Module MLDF
 
         If Not ((beffbw >= 1.0) AndAlso (beffbw <= 10.0) AndAlso (hfd >= 0.05) AndAlso (hfd <= 0.25)) Then Return Double.NaN
 
+        ' only positive (sagging) moments, tension at the bottom fibre
+        If m < 0 Then Return Double.NaN
+
         Dim beffbw_n As Double = (beffbw - 1.0) / 9.0
         Dim hfd_n As Double = (hfd - 0.05) / 0.2
         Dim m_n As Double = (m - 0.004955) / 0.3664
@@ -1408,6 +1440,9 @@ Module MLDF
 
     Public Function As_T(ByVal beff As Double, ByVal bw As Double, ByVal h As Double, ByVal hf As Double, ByVal c As Double, ByVal fcd As Double, ByVal M As Double, ByVal Optional N As Double = 0) As Double
 
+        ' only positive (sagging) moments, tension at the bottom fibre
+        If M < 0 Then Return Double.NaN
+
         Dim d As Double = h - c
         Dim beffbw As Double = beff / bw
         Dim hfd As Double = hf / d
@@ -1444,6 +1479,9 @@ Module MLDF
     'Function returning reinforcement area (As)
 
     Public Function As_R(ByVal b As Double, ByVal h As Double, ByVal c As Double, ByVal fcd As Double, ByVal M As Double, ByVal Optional N As Double = 0) As Double
+
+        ' only positive (sagging) moments, tension at the bottom fibre
+        If M < 0 Then Return Double.NaN
 
         Dim d As Double = h - c
         Dim ys1 As Double = h / 2 - c

@@ -1,3 +1,7 @@
+% Moment sign convention : all functions take positive moments.
+% Columns (CS, CH, RSe, RHe, RSd, RHd) : the sections are doubly symmetric, absolute values of the moments are used.
+% T-beam and rectangular beam (T, R) : positive M causes tension at the bottom fibre (sagging), M < 0 returns NaN.
+
 classdef MLDF
 
     methods(Static)
@@ -11,6 +15,9 @@ classdef MLDF
                 w = NaN;
                 return;
             end
+
+            % moment sign is irrelevant (doubly symmetric section)
+            m = abs(m);
 
             cd_n = (cd - 0.01) / 0.14;
             n_n = (n + 0.6) / 0.7;
@@ -82,6 +89,9 @@ classdef MLDF
                 return;
             end
 
+            % moment sign is irrelevant (doubly symmetric section)
+            m = abs(m);
+
             td_n = (td - 0.05) / 0.15;
             n_n = (n + 0.6) / 0.7;
             m_n = (m - 0.010002) / 0.345579;
@@ -151,6 +161,10 @@ classdef MLDF
                 w = NaN;
                 return;
             end
+
+            % moment sign is irrelevant (doubly symmetric section)
+            mx = abs(mx);
+            my = abs(my);
 
             bh_n = (bh - 1.0) / 1.05;
             cb_n = (cb - 0.01) / 0.14;
@@ -300,6 +314,10 @@ classdef MLDF
                 return;
             end
 
+            % moment sign is irrelevant (doubly symmetric section)
+            mx = abs(mx);
+            my = abs(my);
+
             bh_n = (bh - 1.0) / 1.05;
             tb_n = (tb - 0.05) / 0.16;
             n_n = (n + 0.6) / 0.7;
@@ -448,6 +466,10 @@ classdef MLDF
                 w = NaN;
                 return;
             end
+
+            % moment sign is irrelevant (doubly symmetric section)
+            mx = abs(mx);
+            my = abs(my);
 
             % branch b/h = 1 to 2
 
@@ -879,6 +901,10 @@ classdef MLDF
                 return;
             end
 
+            % moment sign is irrelevant (doubly symmetric section)
+            mx = abs(mx);
+            my = abs(my);
+
             % branch b/h = 1 to 2
 
             if ((bh >= 1.0) && (bh <= 2.0))
@@ -1306,6 +1332,12 @@ classdef MLDF
                 return;
             end
 
+            % only positive (sagging) moments, tension at the bottom fibre
+            if m < 0
+                w = NaN;
+                return;
+            end
+
             beffbw_n = (beffbw - 1.0) / 9.0;
             hfd_n = (hfd - 0.05) / 0.2;
             m_n = (m - 0.004955) / 0.3664;
@@ -1401,6 +1433,12 @@ classdef MLDF
                 return;
             end
 
+            % only positive (sagging) moments, tension at the bottom fibre
+            if m < 0
+                x = NaN;
+                return;
+            end
+
             beffbw_n = (beffbw - 1.0) / 9.0;
             hfd_n = (hfd - 0.05) / 0.2;
             m_n = (m - 0.004955) / 0.3664;
@@ -1491,6 +1529,12 @@ classdef MLDF
                 N = 0;
             end
 
+            % only positive (sagging) moments, tension at the bottom fibre
+            if M < 0
+                As = NaN;
+                return;
+            end
+
             d = h - c;
             beffbw = beff / bw;
             hfd = hf / d;
@@ -1530,6 +1574,12 @@ classdef MLDF
 
             if nargin < 6
                 N = 0;
+            end
+
+            % only positive (sagging) moments, tension at the bottom fibre
+            if M < 0
+                As = NaN;
+                return;
             end
 
             d = h - c;

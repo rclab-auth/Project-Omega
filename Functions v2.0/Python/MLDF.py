@@ -1,3 +1,7 @@
+# Moment sign convention : all functions take positive moments.
+# Columns (CS, CH, RSe, RHe, RSd, RHd) : the sections are doubly symmetric, absolute values of the moments are used.
+# T-beam and rectangular beam (T, R) : positive M causes tension at the bottom fibre (sagging), M < 0 returns NaN.
+
 import math
 
 # Circular solid section (CS)
@@ -6,6 +10,9 @@ import math
 def w_CS(cd,n,m):
 
     if not ((cd>=0.01) and (cd<=0.15) and (n<=0.1) and (n>=-0.6)): return math.nan
+
+    # moment sign is irrelevant (doubly symmetric section)
+    m=abs(m)
 
     cd_n=(cd-0.01)/0.14
     n_n=(n+0.6)/0.7
@@ -70,6 +77,9 @@ def w_CH(td,n,m):
 
     if not ((td>=0.05) and (td<=0.20) and (n<=0.1) and (n>=-0.6)): return math.nan
 
+    # moment sign is irrelevant (doubly symmetric section)
+    m=abs(m)
+
     td_n=(td-0.05)/0.15
     n_n=(n+0.6)/0.7
     m_n=(m-0.010002)/0.345579
@@ -132,6 +142,10 @@ def As_CH(d,t,fcd,N,M):
 def w_RSe(bh,cb,n,mx,my):
 
     if not ((bh>=1.0) and (bh<=2.0) and (cb>=0.01) and (cb<=0.15) and (n<=0.1) and (n>=-0.6)): return math.nan
+
+    # moment sign is irrelevant (doubly symmetric section)
+    mx=abs(mx)
+    my=abs(my)
 
     w=math.nan
 
@@ -273,6 +287,10 @@ def w_RHe(bh,tb,n,mx,my):
 
     if not ((bh>=1.0) and (bh<=2.0) and (tb>=0.05) and (tb<=0.20) and (n<=0.1) and (n>=-0.6)): return math.nan
 
+    # moment sign is irrelevant (doubly symmetric section)
+    mx=abs(mx)
+    my=abs(my)
+
     w=math.nan
 
     bh_n=(bh-1.0)/1.05
@@ -413,6 +431,10 @@ def As_RHe(b,h,t,fcd,N,Mx,My):
 def w_RSd(bh,ch,n,mx,my):
 
     if not ((ch>=0.01) and (ch<=0.15) and (n<=0.1) and (n>=-0.6)): return math.nan
+
+    # moment sign is irrelevant (doubly symmetric section)
+    mx=abs(mx)
+    my=abs(my)
 
     w=math.nan
 
@@ -809,6 +831,10 @@ def As_RSd(b,h,c,fcd,N,Mx,My):
 def w_RHd(bh,th,n,mx,my):
 
     if not ((th>=0.05) and (th<=0.20) and (n<=0.1) and (n>=-0.6)): return math.nan
+
+    # moment sign is irrelevant (doubly symmetric section)
+    mx=abs(mx)
+    my=abs(my)
 
     w=math.nan
 
@@ -1207,6 +1233,9 @@ def w_T(beffbw,hfd,m):
 
     if not ((beffbw>=1.0) and (beffbw<=10.0) and (hfd>=0.05) and (hfd<=0.25)): return math.nan
 
+    # only positive (sagging) moments, tension at the bottom fibre
+    if m < 0: return math.nan
+
     beffbw_n = (beffbw-1.0)/9.0
     hfd_n = (hfd-0.05)/0.2
     m_n = (m-0.004955)/0.3664
@@ -1297,6 +1326,9 @@ def x_T(beffbw,hfd,m):
 
     if not ((beffbw>=1.0) and (beffbw<=10.0) and (hfd>=0.05) and (hfd<=0.25)): return math.nan
 
+    # only positive (sagging) moments, tension at the bottom fibre
+    if m < 0: return math.nan
+
     beffbw_n = (beffbw-1.0)/9.0
     hfd_n = (hfd-0.05)/0.2
     m_n = (m-0.004955)/0.3664
@@ -1383,6 +1415,9 @@ def x_T(beffbw,hfd,m):
 
 def As_T(beff,bw,h,hf,c,fcd,M,N=None):
 
+    # only positive (sagging) moments, tension at the bottom fibre
+    if M < 0: return math.nan
+
     if N is None: N = 0
 
     d = h-c
@@ -1415,6 +1450,9 @@ def x_R(m):
 # Function returning reinforcement area (As)
 
 def As_R(b,h,c,fcd,M,N=None):
+
+    # only positive (sagging) moments, tension at the bottom fibre
+    if M < 0: return math.nan
 
     if N is None: N = 0
 

@@ -1,3 +1,7 @@
+// Moment sign convention : all functions take positive moments.
+// Columns (CS, CH, RSe, RHe, RSd, RHd) : the sections are doubly symmetric, absolute values of the moments are used.
+// T-beam and rectangular beam (T, R) : positive M causes tension at the bottom fibre (sagging), M < 0 returns NaN.
+
 #include <iostream>
 #include <algorithm>
 #include <math.h>
@@ -12,6 +16,9 @@ static double w_CS(double cd, double n, double m)
 {
     if (!((cd >= 0.01) && (cd <= 0.15) && (n <= 0.1) && (n >= -0.6)))
         return NAN;
+
+    // moment sign is irrelevant (doubly symmetric section)
+    m = fabs(m);
 
     double cd_n = (cd - 0.01) / 0.14;
     double n_n = (n + 0.6) / 0.7;
@@ -80,6 +87,9 @@ static double w_CH(double td, double n, double m)
     if (!((td >= 0.05) && (td <= 0.20) && (n <= 0.1) && (n >= -0.6)))
         return NAN;
 
+    // moment sign is irrelevant (doubly symmetric section)
+    m = fabs(m);
+
     double td_n = (td - 0.05) / 0.15;
     double n_n = (n + 0.6) / 0.7;
     double m_n = (m - 0.010002) / 0.345579;
@@ -146,6 +156,10 @@ static double w_RSe(double bh, double cb, double n, double mx, double my)
 {
     if (!((bh >= 1.0) && (bh <= 2.0) && (cb >= 0.01) && (cb <= 0.15) && (n <= 0.1) && (n >= -0.6)))
         return NAN;
+
+    // moment sign is irrelevant (doubly symmetric section)
+    mx = fabs(mx);
+    my = fabs(my);
 
     double bh_n = (bh - 1.0) / 1.05;
     double cb_n = (cb - 0.01) / 0.14;
@@ -290,6 +304,10 @@ static double w_RHe(double bh, double tb, double n, double mx, double my)
     if (!((bh >= 1.0) && (bh <= 2.0) && (tb >= 0.05) && (tb <= 0.20) && (n <= 0.1) && (n >= -0.6)))
         return NAN;
 
+    // moment sign is irrelevant (doubly symmetric section)
+    mx = fabs(mx);
+    my = fabs(my);
+
     double bh_n = (bh - 1.0) / 1.05;
     double tb_n = (tb - 0.05) / 0.16;
     double n_n = (n + 0.6) / 0.7;
@@ -433,6 +451,10 @@ static double w_RSd(double bh, double ch, double n, double mx, double my)
 {
     if (!((ch >= 0.01) && (ch <= 0.15) && (n <= 0.1) && (n >= -0.6)))
         return NAN;
+
+    // moment sign is irrelevant (doubly symmetric section)
+    mx = fabs(mx);
+    my = fabs(my);
 
     // branch b/h = 1 to 2
 
@@ -852,6 +874,10 @@ static double w_RHd(double bh, double th, double n, double mx, double my)
 {
     if (!((th >= 0.05) && (th <= 0.20) && (n <= 0.1) && (n >= -0.6)))
         return NAN;
+
+    // moment sign is irrelevant (doubly symmetric section)
+    mx = fabs(mx);
+    my = fabs(my);
 
     // branch b/h = 1 to 2
 
@@ -1273,6 +1299,9 @@ static double w_T(double beffbw, double hfd, double m)
     if (!((beffbw >= 1.0) && (beffbw <= 10.0) && (hfd >= 0.05) && (hfd <= 0.25)))
         return NAN;
 
+    // only positive (sagging) moments, tension at the bottom fibre
+    if (m < 0) return NAN;
+
     double beffbw_n = (beffbw - 1.0) / 9.0;
     double hfd_n = (hfd - 0.05) / 0.2;
     double m_n = (m - 0.004955) / 0.3664;
@@ -1366,6 +1395,9 @@ static double x_T(double beffbw, double hfd, double m)
     if (!((beffbw >= 1.0) && (beffbw <= 10.0) && (hfd >= 0.05) && (hfd <= 0.25)))
         return NAN;
 
+    // only positive (sagging) moments, tension at the bottom fibre
+    if (m < 0) return NAN;
+
     double beffbw_n = (beffbw - 1.0) / 9.0;
     double hfd_n = (hfd - 0.05) / 0.2;
     double m_n = (m - 0.004955) / 0.3664;
@@ -1453,6 +1485,9 @@ static double x_T(double beffbw, double hfd, double m)
 
 static double As_T(double beff, double bw, double h, double hf, double c, double fcd, double M, double N = 0)
 {
+    // only positive (sagging) moments, tension at the bottom fibre
+    if (M < 0) return NAN;
+
     double d = h - c;
     double beffbw = beff / bw;
     double hfd = hf / d;
@@ -1487,6 +1522,9 @@ static double x_R(double m)
 
 static double As_R(double b, double h, double c, double fcd, double M, double N = 0)
 {
+    // only positive (sagging) moments, tension at the bottom fibre
+    if (M < 0) return NAN;
+
     double d = h - c;
     double ys1 = h / 2 - c;
     double Ms = M - N * ys1;

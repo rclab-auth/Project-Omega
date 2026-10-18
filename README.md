@@ -137,12 +137,12 @@ The networks were trained with EN 1992-1-1:2004, but the functions can also be u
 
 ### Moment sign convention
 
-**All functions take positive moments only.** Negative moments are outside the training range and return `NaN`, 0 or meaningless results.
+**All functions take positive moments.** The code enforces this: the column functions use the absolute values of the moments, and the beam functions return `NaN` for a negative moment.
 
 The double arrows in the sketches are the **positive moment vectors** (right-hand rule): M<sub>x</sub> points along −x and M<sub>y</sub> along +y, so positive M<sub>x</sub> and M<sub>y</sub> both compress the upper right quadrant of the section.
 
-- **Columns (RSe, RSd, RHe, RHd, CS, CH):** the sections are doubly symmetric, so the sign of a moment does not change the required reinforcement. Pass **|M<sub>x</sub>|, |M<sub>y</sub>|, |M|**; the training data cover moment vector angles from 0° to 90° only.
-- **Beams (T, R):** a positive M causes **tension at the bottom fibre** (sagging), where the single reinforcement layer lies, and compression in the flange. For a hogging moment the flange of a T-beam is in tension, so use `As_R` with b = b<sub>w</sub> and the reinforcement at the top.
+- **Columns (RSe, RSd, RHe, RHd, CS, CH):** the sections are doubly symmetric, so the sign of a moment does not change the required reinforcement. The training data cover moment vector angles from 0° to 90° only, so the functions take the absolute values of M<sub>x</sub>, M<sub>y</sub> and M internally, and any combination of signs gives the same result.
+- **Beams (T, R):** a positive M causes **tension at the bottom fibre** (sagging), where the single reinforcement layer lies, and compression in the flange. A negative M returns `NaN`. `NaN` is also returned when a large axial tension makes the moment about the steel M − N·y<sub>s1</sub> negative, since the section then needs reinforcement at both faces. For a hogging moment the flange of a T-beam is in tension, so use `As_R` with b = b<sub>w</sub> and the reinforcement at the top.
 
 ---
 
@@ -307,6 +307,7 @@ The networks must never be used outside the region where they were trained, beca
 1. **Parameter ranges.** Geometric ratios and ν outside the ranges in the tables return `NaN`.
 2. **Moment boundary.** Small auxiliary networks (at most two hidden layers of 8 nodes) predict the maximum normalized moment the section can carry with ω = 0.75, for the given geometry, ν and moment direction. Larger moments return `NaN`.
 3. **Reinforcement limit.** Results above ω = 0.70 for columns, or ω = 0.50 for beams, return `NaN`. Negative network outputs are set to 0 (no reinforcement needed).
+4. **Moment sign.** Beams (T, R) return `NaN` for a negative moment. Columns accept any sign (see [Moment sign convention](#moment-sign-convention)).
 
 Return values per language:
 
@@ -322,17 +323,21 @@ Return values per language:
 
 All examples compute the [worked example](#worked-example) below: a 600 × 500 mm column, C20/25 (f<sub>cd</sub> = 20 / 1.5 MPa), cover 50 mm, N = −400 kN, M<sub>x</sub> = 100 kNm, M<sub>y</sub> = 480 kNm, with equal reinforcement per side. The answer is **A<sub>s</sub> = 0.004291 m² = 42.91 cm²**.
 
-The source files are in `Functions v2.0/<language>/`. Copy the file into your project.
+The source files are in `Functions v2.0/<language>/`. Copy the file into your project. Every example computes A<sub>s</sub> with `As_RSe` and the same section in normalized form with `w_RSe`, checks for invalid input and prints **42.91 cm²** and **ω = 0.4664**.
 
 <details open>
 <summary><b>Python</b> · <code>Python/MLDF.py</code></summary>
 
 ```python
+import math
 import MLDF
 
 As = MLDF.As_RSe(0.60, 0.50, 0.05, 20000/1.5, -400, 100, 480)   # m²
-w = MLDF.w_RSe(1.2, 0.05/0.6, -0.1, 0.05, 0.2)                    # ω = 0.4664
-print(As*1e4, w)
+w = MLDF.w_RSe(1.2, 0.05/0.6, -0.1, 0.05, 0.2)                   # ω
+if math.isnan(As):
+    print('invalid input')
+else:
+    print(f'{As*1e4:.2f} {w:.4f}')                               # 42.91 0.4664
 ```
 </details>
 
@@ -341,9 +346,14 @@ print(As*1e4, w)
 
 ```cpp
 #include "MLDF.cpp"   // plain static functions
+#include <cstdio>
 
-double As = As_RSe(0.60, 0.50, 0.05, 20000/1.5, -400, 100, 480);
-if (isnan(As)) { /* invalid input */ }
+double As = As_RSe(0.60, 0.50, 0.05, 20000/1.5, -400, 100, 480);   // m²
+double w = w_RSe(1.2, 0.05/0.6, -0.1, 0.05, 0.2);                  // ω
+if (isnan(As))
+    printf("invalid input\n");
+else
+    printf("%.2f %.4f\n", As*1e4, w);                              // 42.91 0.4664
 ```
 </details>
 
@@ -351,8 +361,12 @@ if (isnan(As)) { /* invalid input */ }
 <summary><b>C#</b> · <code>C#/MLDF.cs</code></summary>
 
 ```csharp
-double As = MLDF.As_RSe(0.60, 0.50, 0.05, 20000/1.5, -400, 100, 480);
-if (double.IsNaN(As)) { /* invalid input */ }
+double As = MLDF.As_RSe(0.60, 0.50, 0.05, 20000/1.5, -400, 100, 480);   // m²
+double w = MLDF.w_RSe(1.2, 0.05/0.6, -0.1, 0.05, 0.2);                  // ω
+if (double.IsNaN(As))
+    Console.WriteLine("invalid input");
+else
+    Console.WriteLine($"{As*1e4:F2} {w:F4}");                           // 42.91 0.4664
 ```
 </details>
 
@@ -360,8 +374,12 @@ if (double.IsNaN(As)) { /* invalid input */ }
 <summary><b>Java</b> · <code>Java/MLDF.java</code></summary>
 
 ```java
-double As = MLDF.As_RSe(0.60, 0.50, 0.05, 20000/1.5, -400, 100, 480);
-if (Double.isNaN(As)) { /* invalid input */ }
+double As = MLDF.As_RSe(0.60, 0.50, 0.05, 20000/1.5, -400, 100, 480);   // m²
+double w = MLDF.w_RSe(1.2, 0.05/0.6, -0.1, 0.05, 0.2);                  // ω
+if (Double.isNaN(As))
+    System.out.println("invalid input");
+else
+    System.out.printf("%.2f %.4f%n", As*1e4, w);                        // 42.91 0.4664
 ```
 </details>
 
@@ -369,9 +387,12 @@ if (Double.isNaN(As)) { /* invalid input */ }
 <summary><b>VB.NET</b> · <code>VB.NET/MLDF.vb</code></summary>
 
 ```vb
-Dim As_ As Double = MLDF.As_RSe(0.6, 0.5, 0.05, 20000 / 1.5, -400, 100, 480)
+Dim As_ As Double = MLDF.As_RSe(0.6, 0.5, 0.05, 20000 / 1.5, -400, 100, 480)   ' m²
+Dim w As Double = MLDF.w_RSe(1.2, 0.05 / 0.6, -0.1, 0.05, 0.2)                 ' ω
 If Double.IsNaN(As_) Then
-    ' invalid input
+    Console.WriteLine("invalid input")
+Else
+    Console.WriteLine($"{As_ * 10000.0:F2} {w:F4}")                            ' 42.91 0.4664
 End If
 ```
 
@@ -383,9 +404,14 @@ The module relies on the project-level import of `System`, which Visual Studio a
 
 ```fortran
 use MLDF
-real(kind=8) :: As
-As = As_RSe(0.6d0, 0.5d0, 0.05d0, 20000d0/1.5d0, -400d0, 100d0, 480d0)
-if (ieee_is_nan(As)) print *, 'invalid input'
+real(kind=8) :: As, w
+As = As_RSe(0.6d0, 0.5d0, 0.05d0, 20000d0/1.5d0, -400d0, 100d0, 480d0)   ! m²
+w = w_RSe(1.2d0, 0.05d0/0.6d0, -0.1d0, 0.05d0, 0.2d0)                   ! ω
+if (ieee_is_nan(As)) then
+    print *, 'invalid input'
+else
+    print '(F6.2, F7.4)', As*1d4, w                                      ! 42.91 0.4664
+end if
 ```
 
 The lines of the module are long. With gfortran compile with `-ffree-line-length-none`. All arguments are `real(kind=8)`; `N` is optional in `As_T` and `As_R`.
@@ -396,10 +422,14 @@ The lines of the module are long. With gfortran compile with `-ffree-line-length
 
 ```pascal
 uses Math, MLDF;
-var As_: Double;
+var As_, w: Double;
 ...
-As_ := As_RSe(0.6, 0.5, 0.05, 20000/1.5, -400, 100, 480);
-if IsNan(As_) then ...
+As_ := As_RSe(0.6, 0.5, 0.05, 20000/1.5, -400, 100, 480);   // m²
+w := w_RSe(1.2, 0.05/0.6, -0.1, 0.05, 0.2);                  // ω
+if IsNan(As_) then
+    WriteLn('invalid input')
+else
+    WriteLn(As_*1e4:0:2, ' ', w:0:4);                       // 42.91 0.4664
 ```
 </details>
 
@@ -407,8 +437,13 @@ if IsNan(As_) then ...
 <summary><b>Matlab / Octave</b> · <code>Matlab/MLDF.m</code></summary>
 
 ```matlab
-As = MLDF.As_RSe(0.60, 0.50, 0.05, 20000/1.5, -400, 100, 480);
-if isnan(As), disp('invalid input'), end
+As = MLDF.As_RSe(0.60, 0.50, 0.05, 20000/1.5, -400, 100, 480);   % m²
+w = MLDF.w_RSe(1.2, 0.05/0.6, -0.1, 0.05, 0.2);                  % ω
+if isnan(As)
+    disp('invalid input')
+else
+    fprintf('%.2f %.4f\n', As*1e4, w)                            % 42.91 0.4664
+end
 ```
 
 `MLDF` is a class with static methods; keep `MLDF.m` on the path.
@@ -418,10 +453,11 @@ if isnan(As), disp('invalid input'), end
 <summary><b>VBA / Excel</b> · <code>VBA (Excel)/MLDF.xlsm</code></summary>
 
 ```
-=As_RSe(0.6, 0.5, 0.05, 20000/1.5, -400, 100, 480)*10000
+=IFERROR(As_RSe(0.6, 0.5, 0.05, 20000/1.5, -400, 100, 480)*10000, "invalid input")    → 42.91
+=IFERROR(w_RSe(1.2, 0.05/0.6, -0.1, 0.05, 0.2), "invalid input")                      → 0.4664
 ```
 
-Returns 42.91 (cm²). See [Excel workbook](#excel-workbook).
+Invalid input returns `#N/A`, which `IFERROR` turns into the text. With a Greek or other regional setting that uses the decimal comma, write `0,6` and separate the arguments with `;`. See [Excel workbook](#excel-workbook).
 </details>
 
 ---
@@ -546,6 +582,7 @@ Each plot shows the error against ω for every test instance (bottom left), the 
 
 ### Change log
 
+- **October 2026, moment signs.** All column functions of both versions now use the absolute values of the moments (the sections are doubly symmetric; negative moments used to return `NaN` or 0). The T-beam and rectangular beam functions return `NaN` for a negative (hogging) moment, or when M − N·y<sub>s1</sub> < 0, instead of 0 or a negative area. Results for positive moments are unchanged; all nine languages verified identical on 160,000 cases (v2.0) and 60,000 cases (v1.0), half of them with negative moments.
 - **October 2026.** Review of all files of both versions in all nine languages. Fixed: calls to a non-existent class in the Matlab `As_*`, `w_R` and `x_R` (v2.0); a Greek letter in a function name and a `Math.Max` call in the VBA of `w_RHd` for b/h > 2 (v2.0); the argument order of `Application.Atan2` in the VBA boundary checks (v2.0); the exponent of the hollow sections' ellipse boundary in Fortran (v1.0); single-precision constants in Fortran and range checks in Delphi (both versions). README rewritten.
 - **March 2026.** Workbook update.
 - **April 2024.** v2.0.

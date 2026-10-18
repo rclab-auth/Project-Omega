@@ -1,3 +1,6 @@
+# Moment sign convention : all functions take positive moments.
+# Columns (CS, CH, RSe, RHe, RSd, RHd) : the sections are doubly symmetric, absolute values of the moments are used.
+
 import math
 
 # CS function
@@ -5,6 +8,9 @@ import math
 def w_CS(cd,n,m):
 
     w=math.nan
+
+    # moment sign is irrelevant (doubly symmetric section)
+    m=abs(m)
 
     if (cd>=0.01) and (cd<=0.15) and (n<=0.1) and (n>=-0.6):
 
@@ -57,6 +63,9 @@ def w_CH(td,n,m):
 
     w=math.nan
 
+    # moment sign is irrelevant (doubly symmetric section)
+    m=abs(m)
+
     if (td>=0.05) and (td<=0.20) and (n<=0.1) and (n>=-0.6):
 
         td_n=(td-0.05)/0.15
@@ -107,6 +116,10 @@ def w_CH(td,n,m):
 def w_RSe(bh,cb,n,mx,my):
 
     w=math.nan
+
+    # moment sign is irrelevant (doubly symmetric section)
+    mx=abs(mx)
+    my=abs(my)
 
     if (bh>=1.0) and (bh<=2.0) and (cb>=0.01) and (cb<=0.15) and (n<=0.1) and (n>=-0.6):
 
@@ -253,6 +266,10 @@ def w_RHe(bh,tb,n,mx,my):
 
     w=math.nan
 
+    # moment sign is irrelevant (doubly symmetric section)
+    mx=abs(mx)
+    my=abs(my)
+
     if (bh>=1.0) and (bh<=2.0) and (tb>=0.05) and (tb<=0.20) and (n<=0.1) and (n>=-0.6):
 
         bh_n=(bh-1.0)/1.05
@@ -398,6 +415,10 @@ def w_RSd(bh,cb,n,mx,my):
 
     w=math.nan
 
+    # moment sign is irrelevant (doubly symmetric section)
+    mx=abs(mx)
+    my=abs(my)
+
     if (bh>=1.0) and (bh<=2.0) and (cb>=0.01) and (cb<=0.15) and (n<=0.1) and (n>=-0.6):
 
         bh_n=(bh-1.0)/1.05
@@ -542,6 +563,10 @@ def w_RSd(bh,cb,n,mx,my):
 def w_RHd(bh,tb,n,mx,my):
 
     w=math.nan
+
+    # moment sign is irrelevant (doubly symmetric section)
+    mx=abs(mx)
+    my=abs(my)
 
     if (bh>=1.0) and (bh<=2.0) and (tb>=0.05) and (tb<=0.20) and (n<=0.1) and (n>=-0.6):
 

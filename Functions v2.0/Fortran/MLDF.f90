@@ -1,3 +1,7 @@
+! Moment sign convention : all functions take positive moments.
+! Columns (CS, CH, RSe, RHe, RSd, RHd) : the sections are doubly symmetric, absolute values of the moments are used.
+! T-beam and rectangular beam (T, R) : positive M causes tension at the bottom fibre (sagging), M < 0 returns NaN.
+
 module MLDF
 
 use ieee_arithmetic
@@ -14,6 +18,7 @@ function w_CS(cd,n,m)
     implicit none
 
     real(kind=8) :: w_CS,cd,n,m
+    value :: m
     real(kind=8) :: cd_n,n_n,m_n,w
     real(kind=8) :: n_1_1,n_1_2,n_1_3,n_1_4,n_1_5,n_1_6,n_1_7,n_1_8,n_1_9,n_1_10,n_1_11,n_1_12,n_1_13,n_1_14,n_1_15
     real(kind=8) :: n_2_1,n_2_2,n_2_3,n_2_4,n_2_5,n_2_6,n_2_7,n_2_8,n_2_9,n_2_10,n_2_11,n_2_12,n_2_13,n_2_14,n_2_15,w_n
@@ -22,6 +27,9 @@ function w_CS(cd,n,m)
         w_CS = ieee_value(1.d0,ieee_quiet_nan)
         return
     endif
+
+    ! moment sign is irrelevant (doubly symmetric section)
+    m = abs(m)
 
     cd_n = (cd-0.01d0)/0.14d0
     n_n = (n+0.6d0)/0.7d0
@@ -95,6 +103,7 @@ function w_CH(td,n,m)
     implicit none
 
     real(kind=8) :: w_CH,td,n,m
+    value :: m
     real(kind=8) :: td_n,n_n,m_n,w
     real(kind=8) :: n_1_1,n_1_2,n_1_3,n_1_4,n_1_5,n_1_6,n_1_7,n_1_8,n_1_9,n_1_10,n_1_11,n_1_12,n_1_13,n_1_14,n_1_15
     real(kind=8) :: n_2_1,n_2_2,n_2_3,n_2_4,n_2_5,n_2_6,n_2_7,n_2_8,n_2_9,n_2_10,n_2_11,n_2_12,n_2_13,n_2_14,n_2_15,w_n
@@ -103,6 +112,9 @@ function w_CH(td,n,m)
         w_CH = ieee_value(1.d0,ieee_quiet_nan)
         return
     endif
+
+    ! moment sign is irrelevant (doubly symmetric section)
+    m = abs(m)
 
     td_n = (td-0.05d0)/0.15d0
     n_n = (n+0.6d0)/0.7d0
@@ -176,6 +188,7 @@ function w_RSe(bh,cb,n,mx,my)
     implicit none
 
     real(kind=8) :: w_RSe,bh,cb,n,mx,my
+    value :: mx,my
     real(kind=8) :: mx2,my2,mxmy,m,mx_b,my_b,m_b,a,w
     real(kind=8) :: bh_n,cb_n,n_n,mx_n,my_n,m_n,mx2_n,my2_n,mxmy_n,a_n
     real(kind=8) :: n_1_1,n_1_2,n_1_3,n_1_4,n_1_5,n_1_6,n_1_7,n_1_8,n_1_9,n_1_10,n_1_11,n_1_12,n_1_13,n_1_14,n_1_15,n_1_16,n_1_17,n_1_18,n_1_19,n_1_20,n_1_21,n_1_22,n_1_23,n_1_24,n_1_25,n_1_26,n_1_27,n_1_28,n_1_29,n_1_30,n_1_31,n_1_32,n_1_33,n_1_34,n_1_35
@@ -185,6 +198,10 @@ function w_RSe(bh,cb,n,mx,my)
         w_RSe = ieee_value(1.d0,ieee_quiet_nan)
         return
     endif
+
+    ! moment sign is irrelevant (doubly symmetric section)
+    mx = abs(mx)
+    my = abs(my)
 
     w = ieee_value(1.d0,ieee_quiet_nan)
 
@@ -332,6 +349,7 @@ function w_RHe(bh,tb,n,mx,my)
     implicit none
 
     real(kind=8) :: w_RHe,bh,tb,n,mx,my
+    value :: mx,my
     real(kind=8) :: mx2,my2,mxmy,m,mx_b,my_b,m_b,a,w
     real(kind=8) :: bh_n,tb_n,n_n,mx_n,my_n,m_n,mx2_n,my2_n,mxmy_n,a_n
     real(kind=8) :: n_1_1,n_1_2,n_1_3,n_1_4,n_1_5,n_1_6,n_1_7,n_1_8,n_1_9,n_1_10,n_1_11,n_1_12,n_1_13,n_1_14,n_1_15,n_1_16,n_1_17,n_1_18,n_1_19,n_1_20,n_1_21,n_1_22,n_1_23,n_1_24,n_1_25,n_1_26,n_1_27,n_1_28,n_1_29,n_1_30,n_1_31,n_1_32,n_1_33,n_1_34,n_1_35
@@ -341,6 +359,10 @@ function w_RHe(bh,tb,n,mx,my)
         w_RHe = ieee_value(1.d0,ieee_quiet_nan)
         return
     endif
+
+    ! moment sign is irrelevant (doubly symmetric section)
+    mx = abs(mx)
+    my = abs(my)
 
     w = ieee_value(1.d0,ieee_quiet_nan)
 
@@ -489,6 +511,7 @@ function w_RSd(bh,ch,n,mx,my)
     implicit none
 
     real(kind=8) :: w_RSd,bh,ch,n,mx,my
+    value :: mx,my
     real(kind=8) :: mx2,my2,mxmy,m,mx_b,my_b,m_b,a,w
     real(kind=8) :: bh_n,ch_n,n_n,mx_n,my_n,m_n,mx2_n,my2_n,mxmy_n,a_n
     real(kind=8) :: n_1_1,n_1_2,n_1_3,n_1_4,n_1_5,n_1_6,n_1_7,n_1_8,n_1_9,n_1_10,n_1_11,n_1_12,n_1_13,n_1_14,n_1_15,n_1_16,n_1_17,n_1_18,n_1_19,n_1_20,n_1_21,n_1_22,n_1_23,n_1_24,n_1_25,n_1_26,n_1_27,n_1_28,n_1_29,n_1_30,n_1_31,n_1_32,n_1_33,n_1_34,n_1_35
@@ -498,6 +521,10 @@ function w_RSd(bh,ch,n,mx,my)
         w_RSd = ieee_value(1.d0,ieee_quiet_nan)
         return
     endif
+
+    ! moment sign is irrelevant (doubly symmetric section)
+    mx = abs(mx)
+    my = abs(my)
 
     w = ieee_value(1.d0,ieee_quiet_nan)
 
@@ -887,6 +914,7 @@ function w_RHd(bh,th,n,mx,my)
     implicit none
 
     real(kind=8) :: w_RHd,bh,th,n,mx,my
+    value :: mx,my
     real(kind=8) :: mx2,my2,mxmy,m,mx_b,my_b,m_b,a,w
     real(kind=8) :: bh_n,th_n,n_n,mx_n,my_n,m_n,mx2_n,my2_n,mxmy_n,a_n
     real(kind=8) :: n_1_1,n_1_2,n_1_3,n_1_4,n_1_5,n_1_6,n_1_7,n_1_8,n_1_9,n_1_10,n_1_11,n_1_12,n_1_13,n_1_14,n_1_15,n_1_16,n_1_17,n_1_18,n_1_19,n_1_20,n_1_21,n_1_22,n_1_23,n_1_24,n_1_25,n_1_26,n_1_27,n_1_28,n_1_29,n_1_30,n_1_31,n_1_32,n_1_33,n_1_34,n_1_35
@@ -896,6 +924,10 @@ function w_RHd(bh,th,n,mx,my)
         w_RHd = ieee_value(1.d0,ieee_quiet_nan)
         return
     endif
+
+    ! moment sign is irrelevant (doubly symmetric section)
+    mx = abs(mx)
+    my = abs(my)
 
     w = ieee_value(1.d0,ieee_quiet_nan)
 
@@ -1295,6 +1327,12 @@ function w_T(beffbw,hfd,m)
         return
     endif
 
+    ! only positive (sagging) moments, tension at the bottom fibre
+    if (m < 0.0d0) then
+        w_T = ieee_value(1.d0,ieee_quiet_nan)
+        return
+    endif
+
     beffbw_n = (beffbw-1.0d0)/9.0d0
     hfd_n = (hfd-0.05d0)/0.2d0
     m_n = (m-0.004955d0)/0.3664d0
@@ -1396,6 +1434,12 @@ function x_T(beffbw,hfd,m)
         return
     endif
 
+    ! only positive (sagging) moments, tension at the bottom fibre
+    if (m < 0.0d0) then
+        x_T = ieee_value(1.d0,ieee_quiet_nan)
+        return
+    endif
+
     beffbw_n = (beffbw-1.0d0)/9.0d0
     hfd_n = (hfd-0.05d0)/0.2d0
     m_n = (m-0.004955d0)/0.3664d0
@@ -1489,6 +1533,12 @@ function As_T(beff,bw,h,hf,c,fcd,M,N)
 
     real(kind=8),optional :: N
 
+    ! only positive (sagging) moments, tension at the bottom fibre
+    if (M < 0.0d0) then
+        As_T = ieee_value(1.d0,ieee_quiet_nan)
+        return
+    endif
+
     d = h-c
     beffbw = beff/bw
     hfd = hf/d
@@ -1550,6 +1600,12 @@ function As_R(b,h,c,fcd,M,N)
     real(kind=8) :: d,ys1,Ms,mi,fyd
 
     real(kind=8),optional :: N
+
+    ! only positive (sagging) moments, tension at the bottom fibre
+    if (M < 0.0d0) then
+        As_R = ieee_value(1.d0,ieee_quiet_nan)
+        return
+    endif
 
     d = h-c
     ys1 = h/2-c

@@ -1,3 +1,6 @@
+// Moment sign convention : all functions take positive moments.
+// Columns (CS, CH, RSe, RHe, RSd, RHd) : the sections are doubly symmetric, absolute values of the moments are used.
+
 public class functions{
 
     // CS Function
@@ -42,6 +45,9 @@ public class functions{
 
         double w_n;
         double w = Double.NaN;
+
+        // moment sign is irrelevant (doubly symmetric section)
+        m = Math.abs(m);
 
         if ((cd >= 0.01) & (cd <= 0.15) & (n <= 0.1) & (n >= -0.6))
         {
@@ -135,6 +141,9 @@ public class functions{
 
         double w_n;
         double w = Double.NaN;
+
+        // moment sign is irrelevant (doubly symmetric section)
+        m = Math.abs(m);
 
         if ((td >= 0.05) & (td <= 0.2) & (n <= 0.1) & (n >= -0.6))
         {
@@ -279,6 +288,10 @@ public class functions{
 
         double w_n;
         double w = Double.NaN;
+
+        // moment sign is irrelevant (doubly symmetric section)
+        mx = Math.abs(mx);
+        my = Math.abs(my);
 
         if ((bh >= 1.0) & (bh <= 2.0) & (cb >= 0.01) & (cb <= 0.15) & (n <= 0.1) & (n >= -0.6))
         {
@@ -528,6 +541,10 @@ public class functions{
         double w_n;
         double w = Double.NaN;
 
+        // moment sign is irrelevant (doubly symmetric section)
+        mx = Math.abs(mx);
+        my = Math.abs(my);
+
         if ((bh >= 1.0) & (bh <= 2.0) & (tb >= 0.05) & (tb <= 0.2) & (n <= 0.1) & (n >= -0.6))
         {
             bh_n = (bh - 1.0) / 1.05;
@@ -776,6 +793,10 @@ public class functions{
         double w_n;
         double w = Double.NaN;
 
+        // moment sign is irrelevant (doubly symmetric section)
+        mx = Math.abs(mx);
+        my = Math.abs(my);
+
         if ((bh >= 1.0) & (bh <= 2.0) & (cb >= 0.01) & (cb <= 0.15) & (n <= 0.1) & (n >= -0.6))
         {
             bh_n = (bh - 1.0) / 1.05;
@@ -1023,6 +1044,10 @@ public class functions{
 
         double w_n;
         double w = Double.NaN;
+
+        // moment sign is irrelevant (doubly symmetric section)
+        mx = Math.abs(mx);
+        my = Math.abs(my);
 
                 if ((bh >= 1.0) & (bh <= 2.0) & (tb >= 0.05) & (tb <= 0.2) & (n <= 0.1) & (n >= -0.6))
         {
