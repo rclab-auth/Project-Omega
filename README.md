@@ -65,7 +65,7 @@ The result is a set of design functions that are:
 - **Safe against invalid input**: input outside the training ranges, or bending moments that the section cannot carry within the reinforcement limits, return `NaN` instead of a misleading number.
 - **Portable**: plain source code without any machine learning library, in nine languages.
 
-The name comes from **ω**, the mechanical reinforcement ratio that every function returns.
+The name comes from **ω**, the mechanical reinforcement ratio. In every section the `w_*` functions return ω and the `As_*` functions return the reinforcement area A<sub>s</sub>.
 
 ---
 
@@ -84,7 +84,7 @@ The name comes from **ω**, the mechanical reinforcement ratio that every functi
 
 For all columns: ν from −0.6 to +0.1. The moment range is not given explicitly; it is checked by a boundary network (see [Invalid input](#invalid-input-and-return-values)).
 
-The `w_*` and `x_*` functions take **normalized** quantities and return ω or ξ. The `As_*` functions take **dimensions, concrete strength and actions** and return the reinforcement area. Every `As_*` function normalizes its input, calls the corresponding `w_*` function and converts ω back to an area.
+The `w_*` functions take **normalized** quantities and return the **mechanical reinforcement ratio ω**; the `x_*` functions (T, R) return the neutral axis depth ratio ξ. The `As_*` functions take **dimensions, concrete strength and actions** and return the **reinforcement area A<sub>s</sub>**. Every `As_*` function normalizes its input, calls the corresponding `w_*` function and converts ω back to an area.
 
 **Which rectangular layout?** RSe/RHe (equal A<sub>s</sub>/4 per side) and RSd/RHd (constant A<sub>s</sub> per unit length) give the same result for square sections. For b/h > 1, uniformly distributed reinforcement is more economical when bending is mainly about the x axis (M<sub>x</sub>, reinforcement needed along the long sides), while equal reinforcement per side is more economical when bending is mainly about the y axis (M<sub>y</sub>, reinforcement needed along the short sides). Both can be evaluated and the smaller one chosen. For elongated sections (b/h > 2, typical of bridge piers) only RSd/RHd apply.
 
@@ -101,7 +101,7 @@ All arguments are in **m, kN and kPa** (kN/m²). The result is in **m²**.
 | dimensions b, h, d, c, t, b<sub>eff</sub>, b<sub>w</sub>, h<sub>f</sub> | m | 0.60 |
 | concrete design strength f<sub>cd</sub> | kPa | C30/37 with α<sub>cc</sub> = 1.0: f<sub>cd</sub> = 30 / 1.5 = 20 MPa → `20000` |
 | axial force N | kN, **compression negative** | `-1500` |
-| bending moments M, M<sub>x</sub>, M<sub>y</sub> | kNm, **absolute values** | `400` |
+| bending moments M, M<sub>x</sub>, M<sub>y</sub> | kNm, **absolute values** for columns, **positive = sagging** for beams | `400` |
 | result A<sub>s</sub> | m² | `0.004291` m² = 42.91 cm² |
 
 The steel design strength is built into the `As_*` functions: **f<sub>yd</sub> = 500 / 1.15 MPa** (B500, γ<sub>s</sub> = 1.15). The networks were trained for this steel, so the functions are valid only for B500 reinforcement. Any concrete class from C12/15 to C50/60 can be used, since f<sub>cd</sub> enters only through the normalization; choose α<sub>cc</sub> according to your National Annex (see below for EN 1992-1-1:2023).
@@ -135,9 +135,12 @@ The networks were trained with EN 1992-1-1:2004, but the functions can also be u
 - Compute the design strength as f<sub>cd</sub> = η<sub>cc</sub> · k<sub>tc</sub> · f<sub>ck</sub> / γ<sub>C</sub>, with η<sub>cc</sub> = (f<sub>ck,ref</sub> / f<sub>ck</sub>)<sup>1/3</sup> ≤ 1 (Formulas 5.3 and 5.4), and pass it as `fcd`. Since f<sub>cd</sub> enters only through the normalization, nothing else changes.
 - EN 1992-1-1:2023 (Figure 8.1) no longer limits fully compressed sections with the pivot ε<sub>c2</sub> at 3h/7; the extreme fibre always reaches ε<sub>cu</sub>, and under pure compression the steel develops f<sub>yd</sub> (Formula 8.3). For sections under high compression and small moments the 2023 capacity is therefore slightly higher, and the functions return **slightly more reinforcement than needed, on the safe side**. Where the neutral axis lies within the section, both editions give the same result.
 
-### Moments must be absolute values
+### Moment sign convention
 
-The sections are doubly symmetric, so only the magnitudes of the moments matter. Pass **|M<sub>x</sub>|, |M<sub>y</sub>|, |M|**. The training data cover moment vector angles from 0° to 90° only, and negative moments return `NaN` or meaningless results.
+The double arrows in the sketches are the **positive moment vectors** (right-hand rule): M<sub>x</sub> points along −x and M<sub>y</sub> along +y, so positive M<sub>x</sub> and M<sub>y</sub> both compress the upper right quadrant of the section.
+
+- **Columns (RSe, RSd, RHe, RHd, CS, CH):** the sections are doubly symmetric, so only the magnitudes of the moments matter. Pass **|M<sub>x</sub>|, |M<sub>y</sub>|, |M|**. The training data cover moment vector angles from 0° to 90° only, and negative moments return `NaN` or meaningless results.
+- **Beams (T, R):** a positive M causes **tension at the bottom fibre** (sagging), where the single reinforcement layer lies, and compression in the flange. Only positive M is valid; a negative M returns 0 or a negative A<sub>s</sub>. For a hogging moment the flange of a T-beam is in tension, so use `As_R` with b = b<sub>w</sub> and the reinforcement at the top.
 
 ---
 
