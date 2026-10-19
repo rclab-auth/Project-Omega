@@ -148,7 +148,7 @@ The double arrows in the sketches are the **positive moment vectors** (right-han
 
 - **α<sub>cc</sub> is not built into the functions.** It enters only through the input f<sub>cd</sub> = α<sub>cc</sub> · f<sub>ck</sub> / γ<sub>C</sub>, so any value of your National Annex can be used: 1.0 as recommended by EN 1992-1-1:2004, or 0.85 as prescribed for columns in several countries. For example, C20/25 with α<sub>cc</sub> = 0.85 gives f<sub>cd</sub> = 0.85 · 20 / 1.5 = 11.33 MPa, i.e. `11333` kPa. Older design charts and programs often had 0.85 fixed in the stress block and cannot be used with another value.
 - **The functions design the cross-section, not the member.** They return the reinforcement for the given design actions N<sub>Ed</sub>, M<sub>Ed</sub>. Geometric imperfections (EN 1992-1-1 §5.2) and, for slender columns, second-order effects including creep (§5.8) must already be included in the design moments, as with any section design tool.
-- **Gross concrete section.** The concrete area occupied by the bars is not deducted, as in classic design charts. The effect is negligible except under high compression with high reinforcement ratios, where ω may be underestimated by about 2 % (C20/25) to 6 % (C50/60).
+- **Gross concrete section.** Like the classic design charts, the functions use the gross concrete section: the concrete area occupied by the bars is not deducted. The effect is negligible except under high compression with high reinforcement ratios, where ω may be underestimated by about 2 % (C20/25) to 6 % (C50/60).
 
 ---
 
