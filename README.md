@@ -144,10 +144,11 @@ The double arrows in the sketches are the **positive moment vectors** (right-han
 - **Columns (RSe, RSd, RHe, RHd, CS, CH):** the sections are doubly symmetric, so the sign of a moment does not change the required reinforcement. The training data cover moment vector angles from 0° to 90° only, so the functions take the absolute values of M<sub>x</sub>, M<sub>y</sub> and M internally, and any combination of signs gives the same result.
 - **Beams (T, R):** a positive M causes **tension at the bottom fibre** (sagging), where the single reinforcement layer lies, and compression in the flange. A negative M returns `NaN`. `NaN` is also returned when a large axial tension makes the moment about the steel M − N·y<sub>s1</sub> negative, since the section then needs reinforcement at both faces. For a hogging moment the flange of a T-beam is in tension, so use `As_R` with b = b<sub>w</sub> and the reinforcement at the top.
 
-### Concrete strength factor α<sub>cc</sub> and second-order effects
+### Concrete strength factor α<sub>cc</sub>, second-order effects and gross section
 
 - **α<sub>cc</sub> is not built into the functions.** It enters only through the input f<sub>cd</sub> = α<sub>cc</sub> · f<sub>ck</sub> / γ<sub>C</sub>, so any value of your National Annex can be used: 1.0 as recommended by EN 1992-1-1:2004, or 0.85 as prescribed for columns in several countries. For example, C20/25 with α<sub>cc</sub> = 0.85 gives f<sub>cd</sub> = 0.85 · 20 / 1.5 = 11.33 MPa, i.e. `11333` kPa. Older design charts and programs often had 0.85 fixed in the stress block and cannot be used with another value.
 - **The functions design the cross-section, not the member.** They return the reinforcement for the given design actions N<sub>Ed</sub>, M<sub>Ed</sub>. Geometric imperfections (EN 1992-1-1 §5.2) and, for slender columns, second-order effects including creep (§5.8) must already be included in the design moments, as with any section design tool.
+- **Gross concrete section.** The concrete area occupied by the bars is not deducted, as in classic design charts. The effect is negligible except under high compression with high reinforcement ratios, where ω may be underestimated by about 2 % (C20/25) to 6 % (C50/60).
 
 ---
 
