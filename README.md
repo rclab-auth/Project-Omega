@@ -11,15 +11,7 @@
 Closed-form functions that return the **required longitudinal reinforcement** of reinforced concrete sections under axial load and uniaxial or biaxial bending, **directly and without iterations**. Each function is the forward feed of an Artificial Neural Network (ANN), trained on tens of millions of exact section analyses according to Eurocode 2 and tested on hundreds of millions more. The functions are available as plain source code in **nine languages** (C#, C++, Delphi, Fortran, Java, Matlab, Python, VB.NET, VBA) and as a ready-to-use **Excel workbook**.
 
 <p align="center">
-  <img src="docs/img/CS.svg" height="150" alt="Circular solid">
-  <img src="docs/img/CH.svg" height="150" alt="Circular hollow">
-  <img src="docs/img/RSe.svg" height="150" alt="Rectangular solid, equal reinforcement per side">
-  <img src="docs/img/RHe.svg" height="150" alt="Rectangular hollow, equal reinforcement per side">
-  <br>
-  <img src="docs/img/RSd.svg" height="150" alt="Rectangular solid, distributed reinforcement">
-  <img src="docs/img/RHd.svg" height="150" alt="Rectangular hollow, distributed reinforcement">
-  <img src="docs/img/T.svg" height="150" alt="T-beam">
-  <img src="docs/img/R.svg" height="150" alt="Rectangular beam">
+  <img src="docs/img/banner.png" alt="Project Omega: the eight section types">
 </p>
 
 ---
